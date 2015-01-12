@@ -1,0 +1,123 @@
+<!DOCTYPE html> <!-- SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd" -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet"  type="text/css" media="screen" th:href="@{/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet"  type="text/css" media="screen" th:href="@{/css/core.css}" />
+<!--     <script src="http://code.jquery.com/jquery-latest.js"></script> -->
+    <script src="../../../resources/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+    <script>
+        /* Fill in modal with content loaded with Ajax */
+        $(document).ready(function () {
+            $('#myModal').on('show.bs.modal', function (e) {
+                $("#myModalBody").text("");
+                $.ajax({
+                    url: "addMenuItem",  
+                    cache: false
+                })
+                        .done(function (html) {
+                            $("#myModalBody").append(html);
+                        });
+            })
+        });
+    </script>
+    <title>Yummy Noodle Bar</title>
+</head>
+<body>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Add Menu Item</h4>
+            </div>
+            <div class="modal-body" id="myModalBody">Lorem ipsum</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="wrap">
+<!-- {!begin layout} -->
+<div th:include="layout :: head"></div>
+<!-- {!end layout} -->
+
+<div id="main">
+<div class="container-fluid">
+    <div th:include="layout :: left"></div>
+	<div class="jumbotron navbar-left"> <!--  hero-unit span9-->
+        <h3>Menu Items</h3>
+        <p><small>View and update yummy menu items</small></p>
+        <p>
+			<a class="btn btn-info btn-large" href="http://spring.io/">Learn more about Spring</a>  
+			<a class="btn btn-primary btn-large" href="./orders.html" th:href="@{/orders}">Look at customers' orders</a> <!--  th:href="@{orders}" -->
+        </p>
+    </div>
+    <div style="width: 1px; margin-bottom: -20px">&nbsp;</div>
+
+	<th:block th:if="${message != null}">
+        <div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)}, message=${message.message})">&nbsp;</div>
+    </th:block>
+
+    <div class=""> <!-- col-md-12 -->
+<!--         <div class="span9"> -->
+         
+           		<table class="table table-striped">
+					<thead>
+						<tr>
+							<th class="col-lg-3 col-md-3 col-sm-3 col-xs-4 text-center">ID</th>
+							<th class="col-lg-5 col-md-5 col-sm-5 col-xs-5 text-center">Name</th>
+							<th class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center">Cost</th>
+							<th class="col-lg-4 col-md-4 col-sm-5 col-xs-5 text-center small">Minutes to prepare</th>
+							<th class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center small" style="padding-right: 14px;">Update item on MongoDB</th>
+							<th class="col-lg-3 col-md-3 col-sm-3 col-xs-3 text-center small">Remove from MongoDB</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="item,status : ${menuItems}">
+							<td colspan="5" style="padding-right: 0px;">
+								<form action="#" th:action="@{/updateMenuItem}" method="post">
+									<table>
+										<tr>
+											<td class="col-lg-3 col-md-3 col-sm-3 col-xs-4 " style="padding-left: 0px;">
+												<input class="form-control" th:value="${item.id}" disabled="disabled" /> <!-- contenteditable="false" -->
+												<input type="hidden" id="id" name="id" th:value="${item.id}"/>
+											</td>
+											<td class="col-lg-5 col-md-5 col-sm-5 col-xs-5"><input class="form-control" id="name" name="name" th:value="${item.name}" /></td>
+											<td class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><input class="form-control" id="cost" name="cost" th:value="${item.cost}" /></td>
+											<td class="col-lg-4 col-md-4 col-sm-5 col-xs-5"><input class="form-control" id="minutesToPrepare" name="minutesToPrepare" th:value="${item.minutesToPrepare}" /></td>
+<!-- 									    <td><input type="submit" value="Update" /></td> -->
+											<td class="col-lg-3 col-md-3 col-sm-3 col-xs-3"><button type="submit" class="btn btn-primary"><i class="glyphicon glyphicon-pencil"></i> Update</button></td>
+										</tr>
+									</table>
+								</form>
+							</td>
+							<td>
+								<form action="#" th:action="@{/deleteMenuItem}" method="post">
+									<table>
+										<tr>
+											<td><input id="id" name="id" type="hidden" th:value="${item.id}" /></td>
+											<td class="col-lg-3 col-md-3 col-sm-3 col-xs-3" style="padding-left: 0px; padding-right: 0px;" ><button type="submit" class="btn btn-danger"><i class="glyphicon glyphicon-trash"></i> Delete</button></td>
+										</tr>
+									</table>
+								</form>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+				
+				<a href="#"  class="btn btn-large btn-success" data-toggle="modal" data-target="#myModal">Add Menu Item</a><br /><br /> <!-- href="./admin/addMenuItem.html" th:href="@{/addMenuItem}" -->
+<!--         </div> --><!-- /.span9 -->
+    </div>
+</div> <!-- /.container -->
+</div> <!-- /.main -->
+</div> <!-- /.wrap -->
+
+<div th:include="layout :: foot"></div>
+</body>
+</html>

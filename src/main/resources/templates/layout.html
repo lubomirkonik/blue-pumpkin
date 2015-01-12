@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<body>
+
+<div th:fragment="head">
+    <div class="navbar navbar-inverse navbar-fixed-top">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".nav-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/">Yummy Noodle Bar</a>
+             </div>
+             <div class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav">
+                        <li><a href="/">Home</a></li>
+                        <li><a href="/showBasket">Basket</a></li>
+                    </ul>
+                    <ul class="nav navbar-nav navbar-right">
+                    	<li sec:authorize="hasRole('ROLE_ADMIN')"><a href="./admin/orders.html" th:href="@{/orders}">Admin</a></li>
+                    	
+                		<li th:if="${#authorization.expression('!isAuthenticated()')}"><a href="./signin/signin.html" th:href="@{/signin}">Sign in</a></li>
+                		<li th:if="${#authorization.expression('isAuthenticated()')}"><a href="/logout" th:href="@{/logout}">Logout</a></li>
+                		<!-- <li><a href="./signin/signin.html" th:href="@{/signin}">Sign in</a></li>
+                		<li><a href="/logout" th:href="@{/logout}">Logout</a></li> -->
+            		</ul> 
+            </div> 
+            <!--/.nav-collapse -->
+        </div>
+    </div>
+
+</div>
+
+<div th:fragment="left">
+    <div class="well sidebar-nav navbar-left"> <!-- span3 -->
+        <ul class="nav"><!--  nav-list -->
+            <li>Navigation could go here</li><!-- nav-header -->
+            <li><a href="http://www.gopivotal.com/">Pivotal, Inc</a></li>
+            <li><a href="http://www.springsource.org/spring-xd">Spring XD</a></li>
+            <li><a href="http://spring.io">Spring</a></li>
+        </ul>
+    </div>
+</div>
+
+<div th:fragment="foot">
+    <footer>
+    	<div class="container">
+        	<p>&copy; Yummy Noodle Bar 2014</p>
+        </div>	
+    </footer>
+</div>
+
+</body>
+
+</html>

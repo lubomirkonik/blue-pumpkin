@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link href="../../../resources/css/bootstrap.min.css" rel="stylesheet"  type="text/css" media="screen" th:href="@{/css/bootstrap.min.css}"/>
+    <link href="../../../resources/css/core.css" rel="stylesheet"  type="text/css" media="screen" th:href="@{/css/core.css}" />
+<!--     <script src="http://code.jquery.com/jquery-latest.js"></script> -->
+    <script src="../../../resources/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+    <script>
+        /* Fill in modal with content loaded with Ajax */
+        $(document).ready(function () {
+        	//var orderId = $('#orderId').val();
+        	//var orderId = $('#orderId').attr("value");
+            $('#myModal').on('show.bs.modal', function (e) {
+                $("#myModalBody").text("");
+                $.ajax({
+                     url: 'orders/'+orderId+'/edit',
+                  // url: '/orders/'+$('#orderId').attr("value")+'/edit',
+                    cache: false
+                })
+                        .done(function (html) {
+                            $("#myModalBody").append(html);
+                        });
+            })
+        });
+    </script>
+    <title>Yummy Noodle Bar</title>
+</head>
+<body>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Update Order</h4>
+            </div>
+            <div class="modal-body" id="myModalBody">Lorem ipsum</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="wrap">
+<div th:include="layout :: head"></div>
+
+<div id="main">
+<div class="container-fluid">
+	<div th:include="layout :: left"></div>
+	<div class="jumbotron navbar-left">
+        <h3>Orders</h3>
+        <p><small>View and update yummy orders</small></p>
+        <p>
+			<a class="btn btn-info btn-large" href="http://spring.io/">Learn more about Spring</a>
+			<a class="btn btn-primary btn-large" href="./menuItems.html" th:href="@{/menuItems}">Look at menu items</a> <!-- href="menuItems.html" -->
+        </p>
+    </div>
+    <div style="width: 1px; margin-bottom: -20px">&nbsp;</div>
+    
+    <th:block th:if="${message != null}">
+        <div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)}, message=${message.message})">&nbsp;</div>
+    </th:block>
+    
+<div class="" > <!-- col-md-12 -->
+	<th:block th:if="${#lists.size(orders)} >= 1"> <!-- th:unless="${#lists.isEmpty(orders)}" -->
+    <table class="table table-hover products-table" style="margin-bottom:8px;">
+		<thead>
+			<tr>
+          		<th>ID / Status</th>
+          		<th>Date</th>
+         		<th>Products</th>
+          		<th>Name</th>
+          		<th>Address</th>
+<!-- 			<th class="text-center">Total Cost</th> -->
+				<th>Edit order</th>
+				<th>Delete order</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="order,stat : ${orders}">
+				<td th:switch="${order.status}">
+					  <div style="padding-bottom: 8px;" th:text="${order.id}">ef53dd58-8806-47c5-816e-237d6e8f2ad4</div>
+					  
+					  <!-- th:classappend="${order.status} == 'Order Received' ? 'label label-primary' -->
+					  <div th:case="'Order Received'" class="label label-primary" th:text="${order.status}">Order Received</div>
+					  <div th:case="'Order Processing'" class="label label-default" th:text="${order.status}">Order Processing</div>
+					  <div th:case="'Order Processed'" class="label label-info" th:text="${order.status}">Order Processed</div>
+					  <div th:case="'Order Completed'" class="label label-success" th:text="${order.status}">Order Completed</div>
+					  <div th:case="'Order Cancelled'" class="label label-danger" th:text="${order.status}">Order Cancelled</div>
+					  
+					  <div th:case="*" class="label label-default">-</div>
+				</td>
+				
+				<td th:text="${#dates.format(order.dateTimeOfSubmission)}">2014-05-01 21:13:20.165</td> <!-- Wed May 07 13:16:45 CEST 2014 -->
+				
+				<!-- <td th:text="${#strings.listJoin(order.menuItemsNames,'; ')}">[Hamburger, Yummy Noodles]</td> --> <!-- Map orderItems - {YM3=1} -->
+				<td>
+				<table class="table table-condensed products-table" style="background-color: transparent; margin-bottom:8px;">
+        			<thead>
+        				<tr>
+        					<th><small>ID</small></th>
+        					<th><small>Name</small></th>
+        					<th><small>Cost</small></th>
+<!--         				<th><small>Minutes</small></th> -->
+        					<th class="text-center"><small>Quantity</small></th>
+        					<th class="text-center"><small>Total</small></th>
+        				</tr>
+        			</thead>
+        			<tbody>
+        				<tr th:each="item : ${order.menuAndOrderItems}">
+        					<td th:text="${item.id}">YM10</td>
+        					<td th:text="${item.name}">Cheesecake</td>
+        					<td><span th:text="${item.cost}">19.79</span>&nbsp;&euro;</td>
+<!--         					<td class="text-center" th:text="${item.minutesToPrepare}">7</td> -->
+        					<td class="text-center"><span class="badge" th:text="${item.quantity}">2</span></td>
+        					<td class="text-center text-info"><span th:text="${item.itemTotalCost}">39.58</span>&nbsp;&euro;</td>
+        				</tr>
+        				<tr>
+        					<td style="padding-bottom: 0px;"></td>
+        					<td style="padding-bottom: 0px;"></td>
+        					<td colspan="2" style="padding-bottom: 0px;"><small><strong class="pull-right">Total Cost:</strong></small></td>
+        					<td style="padding-bottom: 0px;">
+        						<strong class="text-info" th:text="${order.cost}">39.58</strong><strong>&nbsp;&#8364;</strong>
+        					</td>	
+        				</tr>
+        			</tbody>
+        		</table>	
+				</td>
+				
+				<td th:text="${order.name}">Valter Longo</td>
+				<td th:text="${order.address1}+', '+${order.postcode}">Greenwitch St. 402/C, London, 4802 35</td>
+<!-- 				<td class="text-center text-info"><strong th:text="${order.cost}">39.58</strong><strong>&nbsp;&#8364;</strong></td> -->
+				
+				<td><a th:href="@{|/orders/${order.id}/edit|}" href="./updateOrder.html" class="btn btn-large btn-primary"><i class="glyphicon glyphicon-pencil"></i></a></td>
+		 <!--			  id="orderId" th:value="${order.id}" -->
+		 <!-- <td><a href="#" class="btn btn-large btn-primary" data-toggle="modal" data-target="#myModal"><i class="glyphicon glyphicon-pencil"></i></a></td> -->
+				<td><a th:href="@{|/orders/${order.id}/delete|}" href="#" class="btn btn-large btn-danger"><i class="glyphicon glyphicon-trash"></i></a></td>
+			</tr>
+		</tbody>
+    </table>
+    </th:block>
+    
+    <th:block th:if="${#lists.isEmpty(orders)}">
+    	<div class="alert alert-warning"><strong>Oh no!</strong> No orders were found.</div>
+    </th:block>
+    
+</div> <!-- /.col-md-12 -->
+</div> <!-- /.container -->
+</div> <!-- /.main -->
+</div> <!-- /.wrap -->
+
+<div th:include="layout :: foot"></div>
+</body>
+</html>
