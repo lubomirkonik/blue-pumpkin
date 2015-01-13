@@ -18,7 +18,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 public class WebOrder {
 	
-	private static final String NOT_BLANK_MESSAGE = "{notBlank.message}";
+	private static final String NOT_BLANK_MESSAGE = "The value may not be empty!"; //{notBlank.message}
 	
 	private String id;	
 

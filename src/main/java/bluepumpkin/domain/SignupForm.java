@@ -6,8 +6,8 @@ import bluepumpkin.domain.Account;
 
 public class SignupForm {
 
-	private static final String NOT_BLANK_MESSAGE = "{notBlank.message}";
-	private static final String EMAIL_MESSAGE = "{email.message}";
+	private static final String NOT_BLANK_MESSAGE = "The value may not be empty!"; //{notBlank.message}
+	private static final String EMAIL_MESSAGE = "The value must be a valid email!"; //{email.message}
 
     @NotBlank(message = SignupForm.NOT_BLANK_MESSAGE)
 	@Email(message = SignupForm.EMAIL_MESSAGE)

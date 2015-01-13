@@ -1,0 +1,155 @@
+<!DOCTYPE html> <!-- SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-4.dtd" -->
+<!-- lang="en" -->
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+
+<head>
+	<title>Yummy Noodle Bar</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet" type="text/css" media="screen" th:href="@{/css/bootstrap.min.css}"/>
+    <link href="../static/css/core.css" rel="stylesheet" type="text/css" media="screen" th:href="@{/css/core.css}" />
+<!--     <script src="http://code.jquery.com/jquery-latest.js"></script> -->
+    <script src="../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+    <script src="../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+    <script>
+        /* Fill in modal with content loaded with Ajax */
+        $(document).ready(function () {
+            $('#myModal').on('show.bs.modal', function (e) {
+                $("#myModalBody").text("");
+                $.ajax({
+                    url: "/signup",  
+                    cache: false
+                })
+                        .done(function (html) {
+                            $("#myModalBody").append(html);
+                        });
+            })
+        });
+    </script>
+    <!-- <style type="text/css">
+        body {
+            padding-top: 60px;
+            padding-bottom: 40px;
+        }
+
+        .sidebar-nav {
+            padding: 9px 0;
+        }
+    </style> -->
+    
+    <!-- See http://twitter.github.com/bootstrap/scaffolding.html#responsive -->
+    <!-- <link href="/resources/css/bootstrap-responsive.min.css" rel="stylesheet">
+    </link> -->
+    
+    <!-- HTML5 shim, for IE6-8 support of HTML5 elements -->
+    <!--[if lt IE 9]>
+    <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+</head>
+<body>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="myModalLabel">Signup</h4>
+            </div>
+            <div class="modal-body" id="myModalBody">Lorem ipsum</div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
+
+<div class="wrap">
+<!-- {!begin layout} -->
+<div th:include="layout :: head"></div>
+<!-- {!end layout} -->
+
+<div id="main">
+<div class="container-fluid">
+    <div th:include="layout :: left"></div>
+	<div class="jumbotron navbar-left"> <!--  hero-unit span9-->
+        <h3>Yummy</h3>
+        <p><small>Welcome to the home of all things Noodle</small></p>
+        <p>
+			<a class="btn btn-info btn-large" href="http://spring.io/">Learn more about Spring</a>
+            <a th:if="${#authorization.expression('!isAuthenticated()')}" href="#" class="btn btn-large btn-success" data-toggle="modal" data-target="#myModal">Sign up</a> <!-- href="./signup/signup.html" th:href="@{/signup}" -->
+            <a th:if="${basket.size &gt; 0}"
+               class="btn btn-primary btn-large"
+               href="./showBasket.html" th:href="@{/showBasket}">Look in your basket</a>
+        </p>
+    </div>
+    <div style="width: 1px; margin-bottom: -20px">&nbsp;</div>
+
+	<!-- <div th:if="${message}" th:text="${message}"
+                   id="message" class="alert alert-info">
+            </div> -->
+
+	<!--/* Handle the flash task */-->
+<!-- 	<th:block th:if="${message != null}"> -->
+        <!--/* The message code is returned from the @Controller */-->
+<!--   	<div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)}, message=#{${message.message}(${#authentication.name})})">&nbsp;</div> -->
+<!--  </th:block> -->
+
+    <div class="navbar-left"> <!-- row-fluid -->
+<!--      <div class="span9"> -->
+
+	<th:block th:if="${message != null}">
+        <div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)}, message=${message.message})">&nbsp;</div>
+    </th:block>
+
+    <div id="message" class="alert alert-info">
+         Select from the menu. Currently your basket contains <em th:text="${basket.size}">SOME</em> truly
+         scrumptious item(s).
+    </div>
+
+            <table class="table table-striped">
+                <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Cost</th>
+                    <th>Mins to prepare</th>
+                    <th>Action</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                <tr th:each="item,status : ${menuItems}">
+                    <td th:text="${item.id}"></td>
+                    <td th:text="${item.name}"></td>
+                    <td><span th:text="${item.cost}">5.68</span>&nbsp;&#8364;</td><!-- <small class="glyphicon glyphicon-euro"></small> -->
+                    <td th:text="${item.minutesToPrepare}"></td>
+                    <td>
+                        <form action="/addToBasket" method="POST">
+                            <input id="id" name="id" type="hidden" th:value="${item.id}"/>
+                            <input id="name" name="name" type="hidden" th:value="${item.name}"/>
+                            <input id="cost" name="cost" type="hidden" th:value="${item.cost}"/>
+                            <input id="minutesToPrepare" name="minutesToPrepare" type="hidden"
+                                   th:value="${item.minutesToPrepare}"/>
+                            <input type="submit" value="Add to basket"/>
+                        </form>
+                    </td>
+                </tr>
+                
+                <!-- This example data will be removed by thymeleaf during processing and replaced with the rows generated above -->
+                <tr th:remove="all">
+                    <td>Yummy1</td>
+                    <td>Noodles, with Cheese</td>
+                    <td>$13.99</td>
+                    <td>15</td>
+                </tr>
+                </tbody>
+            </table> 
+                      
+<!--      </div> -->
+    </div>
+</div> <!-- /.container -->
+</div> <!-- /.main -->
+</div> <!-- /.wrap -->
+
+<div th:include="layout :: foot"></div>
+</body>
+</html>

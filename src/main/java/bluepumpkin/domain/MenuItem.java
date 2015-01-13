@@ -26,9 +26,9 @@ import javax.validation.constraints.NotNull;
 @Entity(name = "MENU_ITEMS")
 public class MenuItem implements Serializable {
 	
-	private static final String NOT_BLANK_MESSAGE = "{notBlank.message}";
-	private static final String COST_MESSAGE = "{cost.message}";
-	private static final String MINUTES_MESSAGE = "{minutes.message}";
+	private static final String NOT_BLANK_MESSAGE = "The value may not be empty!"; //{notBlank.message}
+	private static final String COST_MESSAGE = "The value must be from 0.99 to 99.99!"; //{cost.message}
+	private static final String MINUTES_MESSAGE = "The value must be from 1 to 60!"; //{minutes.message}
 
   @NotNull(message = MenuItem.NOT_BLANK_MESSAGE)
   @NotEmpty(message = MenuItem.NOT_BLANK_MESSAGE)

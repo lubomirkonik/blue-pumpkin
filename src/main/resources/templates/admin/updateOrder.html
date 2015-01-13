@@ -3,11 +3,11 @@
 <head>
 <title>Yummy Noodle Bar</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-<link href="../../../resources/css/bootstrap.min.css" rel="stylesheet"  type="text/css" media="screen" th:href="@{/css/bootstrap.min.css}"/>
-    <link href="../../../resources/css/core.css" rel="stylesheet"  type="text/css" media="screen" th:href="@{/css/core.css}" />
+<link href="../../static/css/bootstrap.min.css" rel="stylesheet"  type="text/css" media="screen" th:href="@{/css/bootstrap.min.css}"/>
+    <link href="../../static/css/core.css" rel="stylesheet"  type="text/css" media="screen" th:href="@{/css/core.css}" />
 <!--     <script src="http://code.jquery.com/jquery-latest.js"></script> -->
-    <script src="../../../resources/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
-    <script src="../../../resources/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+    <script src="../../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+    <script src="../../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
 </head>
 <body style="padding-top: 15px;">
 	<form id="updateOrderForm" class="form-narrow form-horizontal" method="post" th:object="${updateOrderForm}" th:action="@{|/orders/${updateOrderForm.id}/update|}" th:fragment="updateOrderForm">

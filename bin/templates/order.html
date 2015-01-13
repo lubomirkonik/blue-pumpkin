@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta name="description" content=""/>
+    <meta name="author" content="Simplicity Itself"/>
+    <link href="../static/css/bootstrap.min.css" rel="stylesheet" media="screen" th:href="@{/css/bootstrap.min.css}"/>
+    <link href="../static/css/core.css" rel="stylesheet" media="screen" th:href="@{/css/core.css}" />
+    <script src="../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
+    <script src="../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
+    
+    <title>Yummy Noodle Bar</title>
+</head>
+<body>
+
+<div class="wrap">
+<div th:include="layout :: head"></div>
+
+<div id="main">
+<div class="container-fluid">
+
+	<div th:include="layout :: left"></div>
+    <div class="jumbotron navbar-left">
+        <h3>Your order is confirmed</h3>
+		<p><small>Check status of your order</small></p>
+        <p>
+            <a class="btn btn-primary btn-large" href="./home.html" th:href="@{/}">Please can I have some more</a>
+            <a class="btn btn-primary btn-large"
+               href="./order.html" th:href="@{|/order/${orderStatus.orderId}|}">Get latest status</a> <!-- "@{'/order/' + ${orderStatus.orderId}}" -->
+        </p>
+    </div>
+    <div style="width: 1px; margin-bottom: -20px">&nbsp;</div>
+    
+    <div class="navbar-left"> <!-- style="width: 800px" --> <!-- row-fluid sidebar-nav -->
+<!--      <div class="span8"> -->
+
+<!-- 			<th:block th:if="${message != null}"> -->
+			<!--  message=#{${message.message}(${orderStatus.name})} -->
+<!--         		<div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)}, message=${message.message} )">&nbsp;</div> -->
+<!--     		</th:block> -->
+    		
+    		<th:block>
+        		<div th:replace="fragments/alert :: alert (type='success', message=|${orderStatus.name}, Thanks for your order.|)">&nbsp;</div>
+    		</th:block>
+
+			<div id="message" class="alert alert-info">
+    			Check status of your order.
+     			Your basket contains <em th:text="${basket.size}">SOME</em> item(s).
+   			</div>
+			
+			<div style="padding-left: 3px;">
+<!--      <p class="text-info"><span th:text="${orderStatus.name}"></span>, Thanks for your order.</p> -->
+
+            <p class="text-info">Your order number is <em th:text="${orderStatus.orderId}"></em></p>
+
+            <p class="text-info">The estimate for cooking is <em>20 minutes</em></p>
+
+<!--      <p class="text-success">The status is currently <span th:text="${orderStatus.status}"></span></p> -->
+			<p class="text-success">The status is currently 
+				<span th:switch="${orderStatus.status}">
+					<span th:case="'Order Received'" class="label label-primary" th:text="${orderStatus.status}">Order Received</span>
+					<span th:case="'Order Processing'" class="label label-default" th:text="${orderStatus.status}">Order Processing</span>
+					<span th:case="'Order Processed'" class="label label-info" th:text="${orderStatus.status}">Order Processed</span>
+					<span th:case="'Order Completed'" class="label label-success" th:text="${orderStatus.status}">Order Completed</span>
+					<span th:case="'Order Cancelled'" class="label label-danger" th:text="${orderStatus.status}">Order Cancelled</span>
+				</span>
+			</p>
+            </div>
+<!--      </div> -->
+    </div>
+</div> <!-- /.container -->
+</div> <!-- /.main -->
+</div> <!-- /.wrap -->
+
+<div th:include="layout :: foot"></div>
+</body>
+</html>

@@ -87,8 +87,8 @@ public class AdminController {
 	}
 	
 	private static boolean visited = false;
-	
-	@RequestMapping(value = {"/","orders"}, method = RequestMethod.GET)
+						  //{"/","orders"}
+	@RequestMapping(value = "orders", method = RequestMethod.GET)
 	public String getOrders(Model model) {
 		if (!visited) {
 			init();
