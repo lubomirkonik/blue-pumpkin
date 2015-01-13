@@ -32,7 +32,7 @@ public class OrderStatusController {
 	@RequestMapping(method = RequestMethod.GET)			// OrderStatus orderStatus
 	public String orderStatus(@ModelAttribute("orderStatus") OrderStatus orderStatus) {
 		LOG.info("Get order status for order id {} customer {}", orderStatus.getOrderId(), orderStatus.getName());
-		return "/order";
+		return "order";
 	}
 
 	@ModelAttribute("orderStatus")

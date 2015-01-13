@@ -36,13 +36,13 @@ public class CheckoutController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String checkout() {
-		return "/checkout";
+		return "checkout";
 	}
 
 	@RequestMapping(method = RequestMethod.POST)
 	public String doCheckout(@Valid @ModelAttribute("customerInfo") CustomerInfo customer, BindingResult result, RedirectAttributes redirectAttrs) {
 		if (result.hasErrors()) {
-			return "/checkout";
+			return "checkout";
 		}
 
 		LOG.debug("No errors, continue with processing for Customer {}:",

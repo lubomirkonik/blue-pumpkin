@@ -22,7 +22,7 @@ public class BasketQueryController {
 	@RequestMapping(value = "/showBasket" , method = RequestMethod.GET)
 	public String show() { // Model model
 		LOG.debug("Show the basket contents");
-		return "/showBasket";
+		return "showBasket";
 	}
 
 	@ModelAttribute("basket")

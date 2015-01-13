@@ -49,11 +49,6 @@ public class AdminController {
 	
 	@PostConstruct
 	private void init() {
-		menuService.createMenuItem(menuItem("YM1", new BigDecimal("1.99"), 11, "Yummy Noodles"));
-		menuService.createMenuItem(menuItem("YM2", new BigDecimal("2.99"), 12, "Special Noodles"));
-		menuService.createMenuItem(menuItem("YM3", new BigDecimal("3.59"), 13, "Low Cal Noodles"));
-		menuService.createMenuItem(menuItem("YM4", new BigDecimal("4.09"), 5, "Greek Salad"));
-		
 		orderService.createOrder(createOrder(UUID.randomUUID().toString(), new Date(), createOrderItems("YM4", "YM1"), "Mark Brown", "Greenwitch St. 402/C, London", "4802 35"));
 		orderService.createOrder(createOrder(UUID.randomUUID().toString(), new Date(), createOrderItems("YM2", "YM1", "YM3"), "Valter Longo", "Le Marais St. 156/D, Paris", "569 21"));
 	}
@@ -77,23 +72,14 @@ public class AdminController {
 		return orderItems;
 	}
 	
-	private MenuItem menuItem(String id, BigDecimal cost, int minutesToPrepare, String name) {
-		MenuItem item = new MenuItem();
-		item.setId(id);
-		item.setCost(cost);
-		item.setMinutesToPrepare(minutesToPrepare);
-		item.setName(name);
-		return item;
-	}
-	
-	private static boolean visited = false;
+//	private static boolean visited = false;
 						  //{"/","orders"}
 	@RequestMapping(value = "orders", method = RequestMethod.GET)
 	public String getOrders(Model model) {
-		if (!visited) {
-			init();
-			visited = true;
-		}
+//		if (!visited) {
+//			init();
+//			visited = true;
+//		}
 		
 		List<Order> orders = new ArrayList<>();
 		orders = orderService.requestAllOrders();
