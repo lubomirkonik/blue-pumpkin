@@ -48,7 +48,7 @@ public class SiteController {
 //	public String getCurrentMenu(Model model) {
 //		LOG.debug("Yummy MenuItemDetails to home view");
 //		model.addAttribute("menuItems", menuService.requestAllMenuItems());
-//		return "/home";
+//		return "home";
 //	}
 	
 //	@ModelAttribute("basket")
