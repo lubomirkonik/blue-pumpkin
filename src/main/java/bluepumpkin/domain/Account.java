@@ -10,7 +10,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 @SuppressWarnings("serial")
-@Entity(name = "ACCOUNT")
+@Entity(name = "account")
 public class Account implements java.io.Serializable {
 
     public static final String ROLE_USER = "ROLE_USER";
