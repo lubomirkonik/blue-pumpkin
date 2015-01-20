@@ -3,6 +3,7 @@ package bluepumpkin.domain;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+
 import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -51,8 +52,23 @@ public class Event {
     public Event(String id) {
         this.id = id;
     }
+    
+    public Event(String id, String type, String name, String place,
+			Date dateTime, String description 
+//			List<Team> teamList, List<Participant> participantList
+			) {
+		super();
+		this.id = id;
+		this.type = type;
+		this.name = name;
+		this.place = place;
+		this.dateTime = dateTime;
+		this.description = description;
+//		this.teamList = teamList;
+//		this.participantList = participantList;
+	}
 
-    public String getId() {
+	public String getId() {
         return id;
     }
 

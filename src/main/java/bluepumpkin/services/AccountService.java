@@ -5,15 +5,18 @@ import javax.persistence.*;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
 import bluepumpkin.domain.Account;
 import bluepumpkin.repository.AccountRepository;
 
+@Service
 @Transactional(readOnly = true)
 public class AccountService {
 	
 	private final AccountRepository accountRepository;
 	
+	@Autowired
 	public AccountService(final AccountRepository accountRepository) {
 		this.accountRepository = accountRepository;
 	}

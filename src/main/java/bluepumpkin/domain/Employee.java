@@ -51,18 +51,18 @@ public class Employee {
 //    @Temporal(TemporalType.TIMESTAMP)
     private Date dateOfBirth;
     
-//    @JoinTable(name = "team_member", joinColumns = {
-//        @JoinColumn(name = "EmployeeID", referencedColumnName = "ID", nullable = false)}, inverseJoinColumns = {
-//        @JoinColumn(name = "TeamID", referencedColumnName = "ID", nullable = false)})
-//    @ManyToMany
-//    private List<Team> teamList;
+    @JoinTable(name = "team_member", joinColumns = {
+        @JoinColumn(name = "EmployeeID", referencedColumnName = "ID", nullable = false)}, inverseJoinColumns = {
+        @JoinColumn(name = "TeamID", referencedColumnName = "ID", nullable = false)})
+    @ManyToMany
+    private List<Team> teamList;
     
 //    @JoinColumn(name = "Email", referencedColumnName = "Email", nullable = false)
 //    @OneToOne(optional = false)
 //    private Account email;
     
-//    @OneToMany(cascade = CascadeType.ALL, mappedBy = "employeeID")
-//    private List<Participant> participantList;
+    @OneToMany(cascade = CascadeType.ALL, mappedBy = "employeeID")
+    private List<Participant> participantList;
 
     public Employee() {
     }
@@ -127,13 +127,13 @@ public class Employee {
         this.dateOfBirth = dateOfBirth;
     }
 
-//    public List<Team> getTeamList() {
-//        return teamList;
-//    }
-//
-//    public void setTeamList(List<Team> teamList) {
-//        this.teamList = teamList;
-//    }
+    public List<Team> getTeamList() {
+        return teamList;
+    }
+
+    public void setTeamList(List<Team> teamList) {
+        this.teamList = teamList;
+    }
 
     public String getEmail() {
         return email;
@@ -143,13 +143,13 @@ public class Employee {
         this.email = email;
     }
 
-//    public List<Participant> getParticipantList() {
-//        return participantList;
-//    }
-//
-//    public void setParticipantList(List<Participant> participantList) {
-//        this.participantList = participantList;
-//    }
+    public List<Participant> getParticipantList() {
+        return participantList;
+    }
+
+    public void setParticipantList(List<Participant> participantList) {
+        this.participantList = participantList;
+    }
 
 //    @Override
 //    public int hashCode() {

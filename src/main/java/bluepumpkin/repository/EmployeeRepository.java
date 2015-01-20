@@ -3,10 +3,10 @@ package bluepumpkin.repository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import bluepumpkin.domain.Account;
+import bluepumpkin.domain.Employee;
 
 @Repository
-public interface AccountRepository extends CrudRepository<Account, Long> {
+public interface EmployeeRepository extends CrudRepository<Employee, Long> {
 
-		Account findByEmail(String email);
+		Employee findByEmail(String email);
 }

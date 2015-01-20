@@ -1,27 +1,25 @@
-package bluepumpkin.config;
-
-import bluepumpkin.repository.*;
-import bluepumpkin.services.AccountService;
-
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-
-@Configuration
-public class PersistenceConfig {
-
-	@Bean
-	public AccountService accountPersistenceService(AccountRepository accountRepository) {
-		return new AccountService(accountRepository);
-	}
-	
+//package bluepumpkin.config;
+//
+//import bluepumpkin.repository.*;
+//import bluepumpkin.services.AccountService;
+//import bluepumpkin.services.EmployeeService;
+//
+//import org.springframework.context.annotation.Bean;
+//import org.springframework.context.annotation.Configuration;
+//
+//@Configuration
+//public class PersistenceConfig {
+//
 //	@Bean
-//	public OrderService ordersPersistenceService(OrdersRepository ordersRepository, OrderStatusRepository orderStatusRepository) {
-//		return new OrderEventHandler(ordersRepository , orderStatusRepository);
+//	public AccountService accountPersistenceService(AccountRepository accountRepository) {
+//		return new AccountService(accountRepository);
 //	}
 //	
 //	@Bean
-//	public MenuService menuPersistenceService(MenuItemRepository menuItemRepository) {
-//		return new MenuEventHandler(menuItemRepository);
+//	public EmployeeService employeePersistenceService(EmployeeRepository employeeRepository, ParticipantRepository participantRepository) {
+//		return new EmployeeService(employeeRepository, participantRepository);
 //	}
-	
-}
+//	
+////	Others services are annotated by @Service and theirs contructors by @Autowired to inject repositories
+//	
+//}

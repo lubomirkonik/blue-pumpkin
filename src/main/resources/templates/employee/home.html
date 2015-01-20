@@ -1,6 +1,12 @@
-<!-- Model attributes: requests, birthdays, sportsEvent with score teamOne teamTwo -->
+<!-- Model attributes: participations, birthdays, 
+		  sportsEvent with score teamOne teamTwo - html will be modified to use current Event entity -->
 <!-- 	  + set navigation - see layout.html -->
-<!--      message is for massages from controller (eg.You've successfully canceled your part. request.) -->
+<!--      message is for messages from controller (eg.You've successfully canceled your part. request.) -->
+
+<!-- URIs: /participations/{id}/cancel(id=${p.id},page='home')
+ in controller: @RequestMapping(value="/participations/{id}/cancel") 
+ 				public String someHandlerMethod(@PathVariable String id, @RequestParam("page") String page)
+-->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
 <head>
@@ -14,13 +20,13 @@
         /* Fill in modal with content loaded with Ajax */
         /* 
            $(document).ready(function () {
-        	//var orderId = $('#orderId').val();
-        	//var orderId = $('#orderId').attr("value");
+        	//var oId = $('#oId').val();
+        	//var oId = $('#oId').attr("value");
             $('#myModal').on('show.bs.modal', function (e) {
                 $("#myModalBody").text("");
                 $.ajax({
-                     url: 'orders/'+orderId+'/edit',
-                  // url: '/orders/'+$('#orderId').attr("value")+'/edit',
+                     url: 'os/'+oId+'/edit',
+                  // url: '/os/'+$('#oId').attr("value")+'/edit',
                     cache: false
                 })
                         .done(function (html) {
@@ -42,12 +48,13 @@
                 <h4 class="modal-title" id="myModalLabel">Teams</h4>
             </div>
             <div class="modal-body row" id="myModalBody">
+            	<th:block th:if="${sportsEvent != null}">
             	<div class="col-md-6">
             	<table class="table table-hover products-table">
             		<thead>
 						<tr>
 			          		<th></th>
-			          		<th></th><!-- Name -->
+			          		<th>Team 1</th>
 			          		<!-- <th>Position</th> -->
 							<th></th><!-- Department -->
 						</tr>
@@ -66,7 +73,7 @@
 				<table class="table table-hover products-table">
 					<thead>
 						<tr>
-			          		<th></th>
+			          		<th>Team 2</th>
 			          		<!-- <th>Position</th> -->
 							<th></th>
 						</tr>
@@ -78,13 +85,14 @@
 					</tr>	
 				</table>
 				</div>
+				</th:block>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
-</div><!-- /.modal -->
+</div><!-- /.modal --> 
 
 <div class="wrap">
 <div th:include="layout :: head"></div>
@@ -94,10 +102,10 @@
 	<div th:include="layout :: left"></div>
 	<div class="jumbotron navbar-left">
         <h3>Home</h3>
-        <p><small>View status of your participation requests for upcoming events</small></p>
+        <p><small>View status of your participation requests</small></p>
         <p>
-			<a class="btn btn-info btn-large" href="#">Button</a>
-			<a class="btn btn-primary btn-large" href="./page.html" th:href="@{/request}">Button</a> <!-- href="page.html" -->
+			<!-- <a class="btn btn-info btn-large" href="#">Button</a>
+			<a class="btn btn-primary btn-large" href="./page.html" th:href="@{/request}">Button</a> --> <!-- href="page.html" -->
         </p>
     </div>
     <div style="width: 1px; margin-bottom: -20px">&nbsp;</div>
@@ -108,7 +116,7 @@
 
 <div class="row">    
 <div class="col-md-9" style="min-height:350px;"> <!-- col-md-12 -->
-	<th:block th:if="${#lists.size(requests)} >= 1"> <!-- th:unless="${#lists.isEmpty(requests)}" -->
+	<th:block th:if="${#lists.size(participations)} >= 1"> <!-- th:unless="${#lists.isEmpty(participations)}" -->
     <table class="table table-hover products-table" style="margin-bottom:8px;">
 		<thead>
 			<tr>
@@ -122,25 +130,31 @@
 			</tr>
 		</thead>
 		<tbody>
-			<tr th:each="request,stat : ${requests}">
-				<td th:text="${#dates.format(request.dateTime)}">2014-05-01 21:13:20.165</td>
-				<td th:text="${request.type}">Meeting</td>
-				<td th:text="${request.name}">Annual Meeting</td>
-				<td th:text="${request.place}">Office</td>
-				<td th:switch="${request.status}">
-					  <div th:case="'Waiting'" class="label label-info" th:text="${request.status}">Waiting</div>
-					  <div th:case="'Approved'" class="label label-success" th:text="${request.status}">Approved</div>
-					  <div th:case="'Denied'" class="label label-danger" th:text="${request.status}">Denied</div>
+			<tr th:each="p,stat : ${participations}">
+				<td th:text="${#dates.format(p.eventID.dateTime)}">2014-05-01 21:13:20.165</td>
+				<!-- Pondelok, 2015, januára 19 18:14:43 CET -->
+				<!-- ISO: 2015-01-19T18:14:43.951+01:00 -->
+				<td th:text="${p.eventID.type}">Meeting</td>
+				<td th:text="${p.eventID.name}">Annual Meeting</td>
+				<td th:text="${p.eventID.place}">Office</td>
+				<td th:switch="${p.status}">
+					  <div th:case="'Waiting'" class="label label-info" th:text="${p.status}">Waiting</div>
+					  <div th:case="'Approved'" class="label label-success" th:text="${p.status}">Approved</div>
+					  <div th:case="'Denied'" class="label label-danger" th:text="${p.status}">Denied</div>
 					  <div th:case="*" class="label label-default">N/A</div>
 				</td>
-				<td th:if="${request.status != 'Denied'}"><a th:href="@{|/requests/${request.id}/cancel|}" href="#" class="btn btn-large btn-danger"><big class="glyphicon glyphicon-remove"></big></a></td>
-				<td th:if="${request.status == 'Denied'}"><a href="#" class="btn btn-large btn-danger" disabled="disabled"><big class="glyphicon glyphicon-remove"></big></a></td>
+				<td th:if="${p.status != 'Denied'}">
+					<!-- "@{|/participations/${p.id}/cancel(page='home')|}" -->
+					<a th:href="@{/participations/{id}/cancel(id=${p.id},page='home')}" href="#" class="btn btn-large btn-danger">
+					<big class="glyphicon glyphicon-remove"></big></a>
+				</td>
+				<td th:if="${p.status == 'Denied'}"><a href="#" class="btn btn-large btn-danger" disabled="disabled"><big class="glyphicon glyphicon-remove"></big></a></td>
 			</tr>
 		</tbody>
     </table>
     </th:block>
     
-    <th:block th:if="${#lists.isEmpty(requests)}">
+    <th:block th:if="${#lists.isEmpty(participations)}">
     	<div class="alert alert-warning">You have <strong>no</strong> participation requests.</div>
     </th:block>
 </div> <!-- /.col-md-12 -->
@@ -165,11 +179,11 @@
 	<th:block th:if="${sportsEvent != null}">
 		<h4 class="text-center">Recent Sports Event</h4>
 		<table class="table table-hover table-condensed products-table" style="margin-bottom:8px;">
-			<tr><td class="text-center" th:text="${#dates.format(event.dateTime)}">15.9.2014 10:00</td></tr>
-			<tr><td class="text-center" th:text="${event.name}">Football</td></tr>
-			<tr><td class="text-center" th:text="${event.place}">Near Football Stadium</td></tr>
+			<tr><td class="text-center" th:text="${#dates.format(sportsEvent.dateTime)}">15.9.2014 10:00</td></tr>
+			<tr><td class="text-center" th:text="${sportsEvent.name}">Football</td></tr>
+			<tr><td class="text-center" th:text="${sportsEvent.place}">Near Football Stadium</td></tr>
 			<tr><td class="text-center"><a href="#" data-toggle="modal" data-target="#myModal">
-				    <big><strong class="text-info" th:text="${event.score}">10 : 15
+				    <big><strong class="text-info" th:text="${sportsEvent.score}">10 : 15
 				     	 </strong></big></a></td></tr>
 		</table>
 	</th:block>
