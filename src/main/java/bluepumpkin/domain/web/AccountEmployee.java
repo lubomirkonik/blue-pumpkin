@@ -8,6 +8,7 @@ import javax.validation.constraints.Past;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import bluepumpkin.domain.Account;
 
@@ -38,12 +39,12 @@ public class AccountEmployee {
    @NotEmpty(message = AccountEmployee.NOT_BLANK_MESSAGE)
    private String lastName;
 
-//   TODO Checkbox
+//   TODO Select-Options input in presentation layer
    @NotNull(message = AccountEmployee.NOT_BLANK_MESSAGE)
    @NotEmpty(message = AccountEmployee.NOT_BLANK_MESSAGE)
    private String position;
    
-//   TODO Checkbox
+//   TODO Select-Options input in presentation layer
    @NotNull(message = AccountEmployee.NOT_BLANK_MESSAGE)
    @NotEmpty(message = AccountEmployee.NOT_BLANK_MESSAGE)
    private String department;
@@ -53,8 +54,13 @@ public class AccountEmployee {
    @NotEmpty(message = AccountEmployee.NOT_BLANK_MESSAGE)
    private String telephone;
    
-//   TODO Set pattern for date (01.01.2001) in presentation layer    
+//   TODO Set pattern for date input in presentation layer (2001-12-01), (01.12.2001)-may not work 
+// 		  (or add here fields for day, month, year and method to set this date field by these fields, on page there will be 3 options inputs)
+   @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) //may be used pattern like pattern = yyyy/MM/dd hh:mm:ss 
    @Past(message = "The value \"${formatter.format('%1$td.%1$tm.%1$tY', validatedValue)}\" is not in past!")
+//   Original:
+//   @Future(message = "The value \"${formatter.format('%1$tY-%1$tm-%1$td', validatedValue)}\" is not in future!")
+//   see http://blog.codeleak.pl/2014/06/better-error-messages-with-bean.html
    private Date dateOfBirth;
 
    public AccountEmployee() {

@@ -1,6 +1,7 @@
 package bluepumpkin.domain;
 
 import java.io.Serializable;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -41,8 +42,17 @@ public class Participant {
     public Participant(String id) {
         this.id = id;
     }
+    
+    public Participant(String id, String status, Employee employeeID,
+			Event eventID) {
+		super();
+		this.id = id;
+		this.status = status;
+		this.employeeID = employeeID;
+		this.eventID = eventID;
+	}
 
-    public String getId() {
+	public String getId() {
         return id;
     }
 
