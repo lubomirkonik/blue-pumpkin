@@ -91,7 +91,8 @@ public class EmployeeController {
 		
 		participant = new Participant(UUID.randomUUID().toString(), "Waiting", employee, eventOne);
 		participantService.save(participant);
-		participant = new Participant(UUID.randomUUID().toString(), "Denied", employee, eventTwo);
+//		participant = new Participant(UUID.randomUUID().toString(), "Denied", employee, eventTwo);
+		participant = new Participant(UUID.randomUUID().toString(), "Approved", employee, eventTwo);
 		participantService.save(participant);
 		
 	}
@@ -122,12 +123,15 @@ public class EmployeeController {
 	
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String employeeHome(Model model, Principal principal) {
+		if (accountService.findByEmail(principal.getName()).isAdmin()) {
+			return "redirect:/admin";
+		}
+		
 		Employee employee = getEmployee(principal);
 		model.addAttribute("navigation", "pages");
 
 		LOG.debug("Employee's participation requests to home view");
 		model.addAttribute("participations", employeeService.getParticipations(employee.getId()));
-//		model.addAttribute("participations", employee.getParticipantList());
 		return "employee/home";
 	}
 	
@@ -149,5 +153,11 @@ public class EmployeeController {
 		LOG.debug("Upcoming events for employee");
 		model.addAttribute("upcomingEvents", employeeService.getUpcomingEvents(employee.getId()));
 		return "employee/upcomingEvents";
+	}
+	
+	@RequestMapping(value = "/admin", method = RequestMethod.GET)
+	public String adminHome(Model model) {
+		model.addAttribute("navigation", "adminPages");
+		return "admin/home";
 	}
 }
