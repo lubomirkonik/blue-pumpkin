@@ -45,7 +45,7 @@
           		<th>Name</th>
           		<th>Place</th>
           		<th>Status</th>
-				<th><small>Request</small></th>
+				<th class="col-md-3"><small>Request Cancel</small></th>
 			</tr>
 		</thead>
 		<tbody>
@@ -62,14 +62,14 @@
 					  <div th:case="*" class="label label-default">N/A</div>
 				</td>
 				<td th:if="${p.status == null}">
-				<a th:href="@{/participations/{id}/doRequest(id=${p.id},page='upcomingEvents')}" href="#" class="btn btn-large btn-success">
+				<a th:href="@{/participations/{id}/doRequest(id=${p.eventID.id},page='upcomingEvents')}" href="#" class="btn btn-large btn-success">
 				<big class="glyphicon glyphicon-ok"></big></a></td>
 				
 				<td th:if="${p.status == 'Approved' || p.status == 'Waiting'}">
 				<a th:href="@{/participations/{id}/cancel(id=${p.id},page='upcomingEvents')}" href="#" class="btn btn-large btn-danger">
 				<big class="glyphicon glyphicon-remove"></big></a></td>
 				
-				<td th:if="${p.status == 'Denied'}"></td>
+				<td th:if="${p.status == 'Denied'}"><a href="#" class="btn btn-large btn-danger" disabled="disabled"><big class="glyphicon glyphicon-remove"></big></a></td>
 			</tr>
 		</tbody>
     </table>

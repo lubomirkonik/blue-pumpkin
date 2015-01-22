@@ -126,22 +126,32 @@ public class EmployeeController {
 		if (accountService.findByEmail(principal.getName()).isAdmin()) {
 			return "redirect:/admin";
 		}
-		
 		Employee employee = getEmployee(principal);
 		model.addAttribute("navigation", "pages");
-
+//		TODO model.addAttribute("birthdays", );
+//		TODO model.addAttribute("sportsEvent", );
 		LOG.debug("Employee's participation requests to home view");
 		model.addAttribute("participations", employeeService.getParticipations(employee.getId()));
 		return "employee/home";
+	}
+	
+	@RequestMapping(value = "/participations/{eventId}/doRequest", method = RequestMethod.GET)
+	public String requestForParticipation(@PathVariable String eventId, Principal principal, RedirectAttributes redirectAttrs) {
+		Employee employee = getEmployee(principal);
+		employeeService.createParticipationRequest(employee, eventId);
+//		TODO assure that request was created
+		MessageHelper.addSuccessAttribute(redirectAttrs, "You have requested for the participation!");
+		return "redirect:/upcomingEvents";
 	}
 	
 	@RequestMapping(value = "/participations/{id}/cancel", method = RequestMethod.GET) 
 	public String cancelParticipation(@PathVariable String id, @RequestParam("page") String page, RedirectAttributes redirectAttrs) {
 		participantService.delete(id);
 		MessageHelper.addSuccessAttribute(redirectAttrs, "Your participation request has been canceled!");
-		if (page == "home") {
+		if (page == "home")
 			return "redirect:/";
-		}
+		else if (page == "upcomingEvents")
+			return "redirect:/upcomingEvents";
 		return "redirect:/";
 	}
 	
@@ -149,15 +159,24 @@ public class EmployeeController {
 	public String getUpcomingEvents(Model model, Principal principal) {
 		Employee employee = getEmployee(principal);
 		model.addAttribute("navigation", "pages");
-		
 		LOG.debug("Upcoming events for employee");
 		model.addAttribute("upcomingEvents", employeeService.getUpcomingEvents(employee.getId()));
 		return "employee/upcomingEvents";
 	}
 	
-	@RequestMapping(value = "/admin", method = RequestMethod.GET)
-	public String adminHome(Model model) {
-		model.addAttribute("navigation", "adminPages");
-		return "admin/home";
+	@RequestMapping(value = "/pastEvents", method = RequestMethod.GET)
+	public String getPastEvents(Model model) {
+		model.addAttribute("navigation", "pages");
+		LOG.debug("All past events");
+		model.addAttribute("pastEvents", employeeService.getPastEvents());
+		return "employee/pastEvents";
+	}
+	
+	@RequestMapping(value = "/contacts", method = RequestMethod.GET)
+	public String getAccounts(Model model) {
+		model.addAttribute("navigation", "pages");
+		LOG.debug("All contacts");
+		model.addAttribute("contacts", employeeService.getContacts());
+		return "employee/contacts";
 	}
 }

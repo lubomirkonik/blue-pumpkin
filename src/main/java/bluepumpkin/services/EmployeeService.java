@@ -1,6 +1,7 @@
 package bluepumpkin.services;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -59,9 +60,6 @@ public class EmployeeService {
 	}
 	
 	private List<Participant> getParticipationsNotSorted(Long employeeId, List<Participant> allParticipations) {
-//		if (participantRepository.findAll() == null)
-//			return null;
-//		List<Participant> allParticipations = participantRepository.findAll();
 		List<Participant> participations = new ArrayList<>();
 		for (Participant participation : allParticipations) {
 			if (participation.getEmployeeID().getId() == employeeId && 
@@ -82,7 +80,6 @@ public class EmployeeService {
 		List<Participant> sorted = getParticipationsNotSorted(employeeId, allParticipations).stream()
 		.sorted((p1, p2) -> p1.getEventID().getDateTime().compareTo(p2.getEventID().getDateTime()))
 		.collect(Collectors.toList());
-		
 		return sorted;
 	}
 	
@@ -169,4 +166,31 @@ public class EmployeeService {
 			return sorted;
 	}
 	
+	public void createParticipationRequest(Employee employee, String eventId) {
+		Event event = eventRepository.findOne(eventId);
+		Participant participation = new Participant(UUID.randomUUID().toString(), "Waiting", employee, event);
+		participantRepository.save(participation);
+	}
+	
+	public List<Event> getPastEvents() {
+		List<Event> allEvents = eventRepository.findAll();
+		List<Event> pastEvents = new ArrayList<>();
+		for (Event event : allEvents) {
+			if (event.getDateTime().compareTo(new Date()) < 0) {
+				pastEvents.add(event);
+			}
+		}
+		List<Event> sorted = pastEvents.stream()
+			.sorted((p1, p2) -> p1.getDateTime().compareTo(p2.getDateTime()))
+			.collect(Collectors.toList());	
+		Collections.reverse(sorted);
+//		sorted by time descending
+		return sorted;
+	}
+	
+	public List<Employee> getContacts() {		
+		return employeeRepository.findAll().stream()
+				.sorted((c1, c2) -> c1.getLastName().compareToIgnoreCase(c2.getLastName()))
+				.collect(Collectors.toList());
+	}
 }
