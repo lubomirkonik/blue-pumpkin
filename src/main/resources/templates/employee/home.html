@@ -60,7 +60,7 @@
 						</tr>
 					</thead>
 					<tbody>
-					<tr th:each="member,stat : ${sportsEvent.teamOne}">
+					<tr th:each="member,stat : ${sportsEvent.teamList[0].employeeList}">
 						<td th:text="${stat}+'.'">1.</td>
 						<td th:text="${member.firstName}+' '+${member.lastName}">Juraj Longo</td>
 						<!-- <td th:text="${member.position}">Manager</td> -->
@@ -78,7 +78,7 @@
 							<th></th>
 						</tr>
 					</thead>
-					<tr th:each="memb,stat : ${sportsEvent.teamTwo}">
+					<tr th:each="memb,stat : ${sportsEvent.teamList[1].employeeList}">
 						<td th:text="${memb.firstName}+' '+${memb.lastName}">Juraj Longo</td>
 						<!-- <td th:text="${memb.position}">Manager</td> -->
 						<td th:text="${memb.department}">Marketing</td>
@@ -183,8 +183,8 @@
 			<tr><td class="text-center" th:text="${sportsEvent.name}">Football</td></tr>
 			<tr><td class="text-center" th:text="${sportsEvent.place}">Near Football Stadium</td></tr>
 			<tr><td class="text-center"><a href="#" data-toggle="modal" data-target="#myModal">
-				    <big><strong class="text-info" th:text="${sportsEvent.score}">10 : 15
-				     	 </strong></big></a></td></tr>
+				    <big><strong class="text-info" th:text="${sportsEvent.teamList[0].score}+' : '+${sportsEvent.teamList[1].score}">
+				    10 : 15</strong></big></a></td></tr>
 		</table>
 	</th:block>
 	<th:block th:if="${sportsEvent == null}">

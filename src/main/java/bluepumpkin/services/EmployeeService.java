@@ -1,10 +1,12 @@
 package bluepumpkin.services;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
@@ -17,9 +19,12 @@ import org.springframework.stereotype.Service;
 import bluepumpkin.domain.Employee;
 import bluepumpkin.domain.Event;
 import bluepumpkin.domain.Participant;
+import bluepumpkin.domain.Team;
+import bluepumpkin.domain.web.Birthday;
 import bluepumpkin.repository.EmployeeRepository;
 import bluepumpkin.repository.EventRepository;
 import bluepumpkin.repository.ParticipantRepository;
+import bluepumpkin.repository.TeamRepository;
 
 //@Transactional
 @Service
@@ -28,14 +33,17 @@ public class EmployeeService {
 	private final EmployeeRepository employeeRepository;
 	private final ParticipantRepository participantRepository;
 	private final EventRepository eventRepository;
+	private final TeamRepository teamRepository;
 	
 	@Autowired
 	public EmployeeService(final EmployeeRepository employeeRepository,
 			final ParticipantRepository participantRepository, 
-			final EventRepository eventRepository) {
+			final EventRepository eventRepository,
+			final TeamRepository teamRepository) {
 		this.employeeRepository = employeeRepository;
 		this.participantRepository = participantRepository;
 		this.eventRepository = eventRepository;
+		this.teamRepository = teamRepository;
 	}
 	
 	public Employee save(Employee employee) {
@@ -57,6 +65,49 @@ public class EmployeeService {
 		} catch (PersistenceException e) {
 			return null;
 		}
+	}
+	
+//	TODO move it to the commonsService
+	public List<Birthday> getBirthdays() {
+		List<Employee> employees = employeeRepository.findAll();
+		List<Birthday> birthdays = new ArrayList<>();
+		if (employees.isEmpty()) {
+			return birthdays; //Collections.emptyList();
+		}
+		for (Employee e : employees) {
+			Date bDate = e.getDateOfBirth();
+			
+			Calendar birthDate = Calendar.getInstance();
+			birthDate.setTime(bDate);
+			
+			int birthDay = birthDate.get(Calendar.DAY_OF_MONTH);
+			int birthMonth = birthDate.get(Calendar.MONTH);
+			
+			Calendar now = Calendar.getInstance();
+			
+			if (birthDay == now.get(Calendar.DAY_OF_MONTH) && birthMonth == now.get(Calendar.MONTH)) {
+				int birthYear = birthDate.get(Calendar.YEAR);
+				int nowYear = now.get(Calendar.YEAR);
+				int age = nowYear - birthYear;
+				Birthday empBirthday = new Birthday(e.getFirstName(), e.getLastName(), e.getPosition(), e.getDepartment(), age);
+				birthdays.add(empBirthday);
+			}
+		}
+		return birthdays;
+	}
+	
+	public Event getLatestSportsEvent() {
+		List<Event> events = eventRepository.findByType("Sports Event");
+		Event latest = events.stream()
+		.max((e1, e2) -> e1.getDateTime().compareTo(e2.getDateTime()))
+		.orElse(null);
+		List<Team> teams = teamRepository.findAll();
+		for (Team t : teams) {
+			if(t.getEventID().getId() == latest.getId()) {
+				latest.getTeamList().add(t);
+			}
+		}
+		return latest;
 	}
 	
 	private List<Participant> getParticipationsNotSorted(Long employeeId, List<Participant> allParticipations) {
@@ -193,4 +244,5 @@ public class EmployeeService {
 				.sorted((c1, c2) -> c1.getLastName().compareToIgnoreCase(c2.getLastName()))
 				.collect(Collectors.toList());
 	}
+
 }

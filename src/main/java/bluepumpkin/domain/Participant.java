@@ -30,6 +30,7 @@ public class Participant {
     
     @JoinColumn(name = "EmployeeID", referencedColumnName = "ID", nullable = false)
     @ManyToOne(optional = false)
+//    TODO remove ID from the name of the field
     private Employee employeeID;
     
     @JoinColumn(name = "EventID", referencedColumnName = "ID", nullable = false)

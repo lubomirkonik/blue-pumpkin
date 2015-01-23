@@ -11,4 +11,5 @@ import bluepumpkin.domain.Participant;
 public interface ParticipantRepository extends JpaRepository<Participant, String> {
 	
 	List<Participant> findByStatus(String status);
+//	List<Participant> findByEventId(String id);
 }

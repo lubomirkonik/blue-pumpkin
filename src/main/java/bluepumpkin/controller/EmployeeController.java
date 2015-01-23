@@ -1,6 +1,5 @@
 package bluepumpkin.controller;
 
-import java.math.BigDecimal;
 import java.security.Principal;
 import java.util.Calendar;
 import java.util.Date;
@@ -15,7 +14,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -30,7 +28,6 @@ import bluepumpkin.services.AccountService;
 import bluepumpkin.services.EmployeeService;
 import bluepumpkin.services.EventService;
 import bluepumpkin.services.ParticipantService;
-import bluepumpkin.services.UserService;
 import bluepumpkin.support.web.MessageHelper;
 
 @Controller
@@ -38,30 +35,86 @@ public class EmployeeController {
 
 	private static final Logger LOG = LoggerFactory.getLogger(EmployeeController.class);
 	
-	private UserService userService;
-	
-	private AccountService accountService;
-	private EmployeeService employeeService;
-	private EventService eventService;
-	private ParticipantService participantService;
-	
-//	private Employee employee;
+	private final AccountService accountService;
+	private final EmployeeService employeeService;
+	private final EventService eventService;
+	private final ParticipantService participantService;
 	
 	@Autowired
 	public EmployeeController(AccountService accountService, EmployeeService employeeService,
-			EventService eventService, ParticipantService participantService,
-			UserService userService) {
+			EventService eventService, ParticipantService participantService) {
 		this.accountService = accountService;
 		this.employeeService = employeeService;
 		this.eventService = eventService;
 		this.participantService = participantService;
-		this.userService = userService;
+	}
+	
+	private Employee getEmployee(Principal principal) {
+		Assert.notNull(principal);
+		return employeeService.findByEmail(principal.getName());
+	}
+	
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String employeeHome(Model model, Principal principal) {
+		if (accountService.findByEmail(principal.getName()).isAdmin()) {
+			return "redirect:/admin";
+		}
+		Employee employee = getEmployee(principal);
+		model.addAttribute("navigation", "pages");
+		model.addAttribute("birthdays", employeeService.getBirthdays());
+		model.addAttribute("sportsEvent", employeeService.getLatestSportsEvent());
+		LOG.debug("Employee's participation requests to home view");
+		model.addAttribute("participations", employeeService.getParticipations(employee.getId()));
+		return "employee/home";
+	}
+	
+	@RequestMapping(value = "/participations/{eventId}/doRequest", method = RequestMethod.GET)
+	public String requestForParticipation(@PathVariable String eventId, Principal principal, RedirectAttributes redirectAttrs) {
+		Employee employee = getEmployee(principal);
+		employeeService.createParticipationRequest(employee, eventId);
+//		TODO assure that request was created
+		MessageHelper.addSuccessAttribute(redirectAttrs, "You have requested for the participation!");
+		return "redirect:/upcomingEvents";
+	}
+	
+	@RequestMapping(value = "/participations/{id}/cancel", method = RequestMethod.GET) 
+	public String cancelParticipation(@PathVariable String id, @RequestParam("page") String page, RedirectAttributes redirectAttrs) {
+		participantService.delete(id);
+		MessageHelper.addSuccessAttribute(redirectAttrs, "Your participation request has been canceled!");
+		if (page == "home")
+			return "redirect:/";
+		if (page == "upcomingEvents")
+			return "redirect:/upcomingEvents";
+		return "redirect:/";
+	}
+	
+	@RequestMapping(value = "/upcomingEvents", method = RequestMethod.GET)
+	public String getUpcomingEvents(Model model, Principal principal) {
+		Employee employee = getEmployee(principal);
+		model.addAttribute("navigation", "pages");
+		LOG.debug("Upcoming events for employee");
+		model.addAttribute("upcomingEvents", employeeService.getUpcomingEvents(employee.getId()));
+		return "employee/upcomingEvents";
+	}
+	
+	@RequestMapping(value = "/pastEvents", method = RequestMethod.GET)
+	public String getPastEvents(Model model) {
+		model.addAttribute("navigation", "pages");
+		LOG.debug("All past events");
+		model.addAttribute("pastEvents", employeeService.getPastEvents());
+		return "employee/pastEvents";
+	}
+	
+	@RequestMapping(value = "/contacts", method = RequestMethod.GET)
+	public String getAccounts(Model model) {
+		model.addAttribute("navigation", "pages");
+		LOG.debug("All contacts");
+		model.addAttribute("contacts", employeeService.getContacts());
+		return "employee/contacts";
 	}
 	
 	@PostConstruct
 	private void init() {
-//		userService.signin(new Account("user", "user", Account.ROLE_USER));
-		
 //		Employee for default account "user"
 		Account account = accountService.findByEmail("user");
 		Employee employee = employee(account.getId(), "firstName", "lastName", "position", "department", "telephone", account.getEmail(), getDate(1980, 1, 20));
@@ -95,6 +148,13 @@ public class EmployeeController {
 		participant = new Participant(UUID.randomUUID().toString(), "Approved", employee, eventTwo);
 		participantService.save(participant);
 		
+//		TODO Teams
+	}
+	
+	private Date getDate(int year, int month, int day) {
+		Calendar date = Calendar.getInstance();
+		date.set(year, month, day);
+		return date.getTime();
 	}
 	
 	private Employee employee(Long id, String firstName, String lastName, String position, String department, String telephone, String email, Date dateOfBirth) {
@@ -110,73 +170,4 @@ public class EmployeeController {
 		return employee;
 	}
 	
-	private Employee getEmployee(Principal principal) {
-		Assert.notNull(principal);
-		return employeeService.findByEmail(principal.getName());
-	}
-	
-	private Date getDate(int year, int month, int day) {
-		Calendar date = Calendar.getInstance();
-		date.set(year, month, day);
-		return date.getTime();
-	}
-	
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String employeeHome(Model model, Principal principal) {
-		if (accountService.findByEmail(principal.getName()).isAdmin()) {
-			return "redirect:/admin";
-		}
-		Employee employee = getEmployee(principal);
-		model.addAttribute("navigation", "pages");
-//		TODO model.addAttribute("birthdays", );
-//		TODO model.addAttribute("sportsEvent", );
-		LOG.debug("Employee's participation requests to home view");
-		model.addAttribute("participations", employeeService.getParticipations(employee.getId()));
-		return "employee/home";
-	}
-	
-	@RequestMapping(value = "/participations/{eventId}/doRequest", method = RequestMethod.GET)
-	public String requestForParticipation(@PathVariable String eventId, Principal principal, RedirectAttributes redirectAttrs) {
-		Employee employee = getEmployee(principal);
-		employeeService.createParticipationRequest(employee, eventId);
-//		TODO assure that request was created
-		MessageHelper.addSuccessAttribute(redirectAttrs, "You have requested for the participation!");
-		return "redirect:/upcomingEvents";
-	}
-	
-	@RequestMapping(value = "/participations/{id}/cancel", method = RequestMethod.GET) 
-	public String cancelParticipation(@PathVariable String id, @RequestParam("page") String page, RedirectAttributes redirectAttrs) {
-		participantService.delete(id);
-		MessageHelper.addSuccessAttribute(redirectAttrs, "Your participation request has been canceled!");
-		if (page == "home")
-			return "redirect:/";
-		else if (page == "upcomingEvents")
-			return "redirect:/upcomingEvents";
-		return "redirect:/";
-	}
-	
-	@RequestMapping(value = "/upcomingEvents", method = RequestMethod.GET)
-	public String getUpcomingEvents(Model model, Principal principal) {
-		Employee employee = getEmployee(principal);
-		model.addAttribute("navigation", "pages");
-		LOG.debug("Upcoming events for employee");
-		model.addAttribute("upcomingEvents", employeeService.getUpcomingEvents(employee.getId()));
-		return "employee/upcomingEvents";
-	}
-	
-	@RequestMapping(value = "/pastEvents", method = RequestMethod.GET)
-	public String getPastEvents(Model model) {
-		model.addAttribute("navigation", "pages");
-		LOG.debug("All past events");
-		model.addAttribute("pastEvents", employeeService.getPastEvents());
-		return "employee/pastEvents";
-	}
-	
-	@RequestMapping(value = "/contacts", method = RequestMethod.GET)
-	public String getAccounts(Model model) {
-		model.addAttribute("navigation", "pages");
-		LOG.debug("All contacts");
-		model.addAttribute("contacts", employeeService.getContacts());
-		return "employee/contacts";
-	}
 }
