@@ -97,16 +97,40 @@ public class EmployeeService {
 	}
 	
 	public Event getLatestSportsEvent() {
-		List<Event> events = eventRepository.findByType("Sports Event");
-		Event latest = events.stream()
+//		List<Event> events = eventRepository.findByType("Sports Event");		
+//		List<Event> eventsWithScore = new ArrayList<>();
+////		Find events whose teams have score
+//		for (Event e : events) {
+//			if (e.getTeamList().get(0) != null && e.getTeamList().get(1) != null) {
+//				eventsWithScore.add(e);
+//			}
+//		}
+		
+//		All teams
+		List<Team> teams = teamRepository.findAll();
+//		Teams with score - to ensure that it is past sports event    with score
+		List<Team> teamsWithScore = teams.stream()
+		.filter(t -> t.getScore() != null)
+		.collect(Collectors.toList());
+//		Events from teams with score
+		List<Event> eventsOfTeamsWithScore = teamsWithScore.stream()
+		.map(t -> t.getEventID())
+		.distinct() //teams are two for one event, so we need to reduce the two same events in stream to one
+		.collect(Collectors.toList());
+//		Find latest sports event
+		Event latest = eventsOfTeamsWithScore.stream()
 		.max((e1, e2) -> e1.getDateTime().compareTo(e2.getDateTime()))
 		.orElse(null);
-		List<Team> teams = teamRepository.findAll();
-		for (Team t : teams) {
-			if(t.getEventID().getId() == latest.getId()) {
-				latest.getTeamList().add(t);
-			}
-		}
+//		Find teams for the latest event and add them to the latest event
+		teams.stream()
+		.filter(t -> t.getEventID().getId() == latest.getId())
+		.forEach(t -> latest.getTeamList().add(t));
+//		the same
+//		for (Team t : teams) {
+//			if(t.getEventID().getId() == latest.getId()) {
+//				latest.getTeamList().add(t);
+//			}
+//		}
 		return latest;
 	}
 	
@@ -243,6 +267,10 @@ public class EmployeeService {
 		return employeeRepository.findAll().stream()
 				.sorted((c1, c2) -> c1.getLastName().compareToIgnoreCase(c2.getLastName()))
 				.collect(Collectors.toList());
+	}
+
+	public void createTeam(Team team) {
+		teamRepository.save(team);
 	}
 
 }

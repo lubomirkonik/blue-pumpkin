@@ -2,6 +2,7 @@ package bluepumpkin.domain;
 
 import java.io.Serializable;
 import java.util.List;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -23,7 +24,7 @@ public class Team {
 	
     @Id
     @Column(name = "ID")
-    private Integer id;
+    private String id;
     
     @Column(name = "Score")
     private Integer score;
@@ -38,15 +39,24 @@ public class Team {
     public Team() {
     }
 
-    public Team(Integer id) {
+    public Team(String id) {
         this.id = id;
     }
 
-    public Integer getId() {
+    public Team(String id, Integer score, List<Employee> employeeList,
+			Event eventID) {
+		super();
+		this.id = id;
+		this.score = score;
+		this.employeeList = employeeList;
+		this.eventID = eventID;
+	}
+
+	public String getId() {
         return id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.id = id;
     }
 
