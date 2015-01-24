@@ -1,6 +1,7 @@
 package bluepumpkin.services;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
@@ -100,6 +101,10 @@ public class AdminService {
 	public void updateEvent(Event event) {
 		eventRepository.save(event);
 	}
+	
+	public List<String> getEventTypes() {
+		return Arrays.asList("Meeting,Training,Sports Event,Trip".split(","));
+	}
 
 	public void deleteEvent(String id) {
 		List<Participant> participations = participantRepository.findAll();
@@ -124,4 +129,5 @@ public class AdminService {
 				.collect(Collectors.toList());
 	}
 
+	
 }

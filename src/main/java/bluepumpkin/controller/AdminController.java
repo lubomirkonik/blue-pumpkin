@@ -35,12 +35,7 @@ public class AdminController {
 		this.employeeService = employeeService;
 	}
 	
-//	@PostConstruct
-//	private void init() {
-//
-//	}
-	
-	@RequestMapping(value = "/", method = RequestMethod.GET)
+	@RequestMapping(value = "", method = RequestMethod.GET)
 	public String adminHome(Model model) {
 		model.addAttribute("navigation", "adminPages");
 		model.addAttribute("birthdays", employeeService.getBirthdays());
@@ -72,16 +67,23 @@ public class AdminController {
 		return "admin/upcomingEvents";
 	}
 	
+//	TODO ID may be initialized
 	@RequestMapping(value = "/addEvent", method = RequestMethod.GET)
 	public String initAddEventForm(Model model) {
 		model.addAttribute("navigation", "adminPages");
+		model.addAttribute("form", "addEvent");
 		model.addAttribute("eventForm", new Event());
+		model.addAttribute("allTypes", adminService.getEventTypes());
 		return "admin/eventForm";
 	}
 	
 	@RequestMapping(value = "/addEvent", method = RequestMethod.POST)
-	public String processAddEventForm(@Valid @ModelAttribute("eventForm") Event event, Errors errors, RedirectAttributes redirectAttrs) {
+	public String processAddEventForm(@Valid @ModelAttribute("eventForm") Event event, Model model,
+			Errors errors, RedirectAttributes redirectAttrs) {
 		if (errors.hasErrors()) {
+			model.addAttribute("navigation", "adminPages");
+			model.addAttribute("form", "addEvent");
+			model.addAttribute("allTypes", adminService.getEventTypes());
 			return "admin/eventForm";
 		}
 		LOG.debug("No errors, continue with creating of event {}:", event.getName());
@@ -90,16 +92,23 @@ public class AdminController {
 		return "redirect:/admin/upcomingEvents";
 	}
 	
-	@RequestMapping(value = "/updateEvent/{id}", method = RequestMethod.GET)
-	public String initUpdateEventForm(@PathVariable String id, Model model) {
+	@RequestMapping(value = "/updateEvent/{eventId}", method = RequestMethod.GET)
+	public String initUpdateEventForm(@PathVariable String eventId, Model model) {
 		model.addAttribute("navigation", "adminPages");
-		model.addAttribute("eventForm", adminService.findEvent(id));
+		model.addAttribute("form", "updateEvent");
+		model.addAttribute("eventForm", adminService.findEvent(eventId));
+		model.addAttribute("allTypes", adminService.getEventTypes());
 		return "admin/eventForm";
 	}
 	
-	@RequestMapping(value = "/updateEvent/{id}", method = RequestMethod.POST)
-	public String processUpdateEventForm(@Valid @ModelAttribute("eventForm") Event event, Errors errors, RedirectAttributes redirectAttrs) {
+//	Path variable id not needed
+	@RequestMapping(value = "/updateEvent", method = RequestMethod.POST)
+	public String processUpdateEventForm(@Valid @ModelAttribute("eventForm") Event event, Model model,
+			Errors errors, RedirectAttributes redirectAttrs) {
 		if (errors.hasErrors()) {
+			model.addAttribute("navigation", "adminPages");
+			model.addAttribute("form", "updateEvent");
+			model.addAttribute("allTypes", adminService.getEventTypes());
 			return "admin/eventForm";
 		}
 		LOG.debug("No errors, continue with updating of event {}:", event.getName());
@@ -112,11 +121,9 @@ public class AdminController {
 	public String deleteEvent(@PathVariable String id, @RequestParam("page") String page, RedirectAttributes redirectAttrs) {
 		adminService.deleteEvent(id);
 		MessageHelper.addSuccessAttribute(redirectAttrs, "Event has been deleted!");
-		if (page == "upcomingEvents")
-			return "redirect:/admin/upcomingEvents";
-		if (page == "pastEvents")
-			return "redirect:/admin/pastEvents";
-		return "redirect:/admin";
+		if (page.equals("upcomingEvents"))
+			 return "redirect:/admin/upcomingEvents";
+		else return "redirect:/admin/pastEvents";
 	}
 	
 	@RequestMapping(value = "/pastEvents", method = RequestMethod.GET)

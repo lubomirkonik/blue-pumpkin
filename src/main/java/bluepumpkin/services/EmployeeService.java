@@ -96,6 +96,7 @@ public class EmployeeService {
 		return birthdays;
 	}
 	
+//	Gets most recent sports event with score
 	public Event getLatestSportsEvent() {
 //		List<Event> events = eventRepository.findByType("Sports Event");		
 //		List<Event> eventsWithScore = new ArrayList<>();
@@ -121,8 +122,9 @@ public class EmployeeService {
 		Event latest = eventsOfTeamsWithScore.stream()
 		.max((e1, e2) -> e1.getDateTime().compareTo(e2.getDateTime()))
 		.orElse(null);
+		
 //		Find teams for the latest event and add them to the latest event
-		teams.stream()
+		teamsWithScore.stream()
 		.filter(t -> t.getEventID().getId() == latest.getId())
 		.forEach(t -> latest.getTeamList().add(t));
 //		the same

@@ -1,6 +1,6 @@
 <!-- Model attributes: participations, birthdays, 
 		  sportsEvent with score teamOne teamTwo - html will be modified to use current Event entity -->
-<!-- 	  + set navigation - see layout.html -->
+<!-- 	  navigation - see layout.html -->
 <!--      message is for messages from controller (eg.You've successfully canceled your part. request.) -->
 
 <!-- URIs: /participations/{id}/cancel(id=${p.id},page='home')
@@ -16,26 +16,6 @@
 <!--     <script src="http://code.jquery.com/jquery-latest.js"></script> -->
     <script src="../../static/js/jquery.min.js" th:src="@{/js/jquery.min.js}"></script>
     <script src="../../static/js/bootstrap.min.js" th:src="@{/js/bootstrap.min.js}"></script>
-    <script>
-        /* Fill in modal with content loaded with Ajax */
-        /* 
-           $(document).ready(function () {
-        	//var oId = $('#oId').val();
-        	//var oId = $('#oId').attr("value");
-            $('#myModal').on('show.bs.modal', function (e) {
-                $("#myModalBody").text("");
-                $.ajax({
-                     url: 'os/'+oId+'/edit',
-                  // url: '/os/'+$('#oId').attr("value")+'/edit',
-                    cache: false
-                })
-                        .done(function (html) {
-                            $("#myModalBody").append(html);
-                        });
-            	})
-        	});
-        */
-    </script>
     <title>Home</title>
 </head>
 <body>
@@ -104,7 +84,7 @@
         <h3>Home</h3>
         <p><small>View status of your participation requests</small></p>
         <p>
-			<a class="btn btn-info btn-large" href="./home.html" th:href="@{/}">Home</a>
+			<!-- <a class="btn btn-info btn-large" href="./home.html" th:href="@{/}">Home</a> -->
 			<a class="btn btn-primary btn-large" href="/logout" th:href="@{/logout}">Logout</a> <!-- href="page.html" -->
         </p>
     </div>
@@ -115,7 +95,7 @@
     </th:block>
 
 <div class="row">    
-<div class="col-md-9" style="min-height:200px;"> <!-- col-md-12 -->
+<div class="col-md-9" style="min-height:350px;"> <!-- col-md-12 -->
 	<th:block th:if="${#lists.size(participations)} >= 1"> <!-- th:unless="${#lists.isEmpty(participations)}" -->
     <table class="table table-hover products-table" style="margin-bottom:8px;">
 		<thead>
@@ -144,7 +124,7 @@
 					  <div th:case="*" class="label label-default">N/A</div>
 				</td>
 				<td th:if="${p.status != 'Denied'}">
-					<!-- "@{|/participations/${p.id}/cancel(page='home')|}" -->
+					<!-- "@{|/participations/${p.id}/cancel(page='home')|}" try! -->
 					<a th:href="@{/participations/{id}/cancel(id=${p.id},page='home')}" href="#" class="btn btn-large btn-danger">
 					<big class="glyphicon glyphicon-remove"></big></a>
 				</td>
