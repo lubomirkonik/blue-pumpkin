@@ -1,5 +1,7 @@
 package bluepumpkin.controller;
 
+import java.util.List;
+
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -13,9 +15,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import bluepumpkin.domain.Event;
+import bluepumpkin.domain.web.Eventw;
 import bluepumpkin.services.AdminService;
 import bluepumpkin.services.EmployeeService;
 import bluepumpkin.support.web.MessageHelper;
@@ -72,49 +76,77 @@ public class AdminController {
 	public String initAddEventForm(Model model) {
 		model.addAttribute("navigation", "adminPages");
 		model.addAttribute("form", "addEvent");
-		model.addAttribute("eventForm", new Event());
+		model.addAttribute("eventForm", new Eventw());
 		model.addAttribute("allTypes", adminService.getEventTypes());
 		return "admin/eventForm";
-	}
+	}	
+	
+//	@ModelAttribute
+//	public void populateModel(@RequestParam("form") String form, Model model) {
+//		if (form.equals("addEvent")) {
+//			model.addAttribute("form", "addEvent");
+//			model.addAttribute("navigation", "adminPages");
+//			model.addAttribute("allTypes", adminService.getEventTypes());
+//		} else if (form.equals("updateEvent")) {
+//			model.addAttribute("form", "updateEvent");
+//			model.addAttribute("navigation", "adminPages");
+//			model.addAttribute("allTypes", adminService.getEventTypes());
+//		}
+//	}
+	
+//	@ModelAttribute("allTypes")
+//	private List<String> getEventTypes() {
+//		return adminService.getEventTypes();
+//	}
 	
 	@RequestMapping(value = "/addEvent", method = RequestMethod.POST)
-	public String processAddEventForm(@Valid @ModelAttribute("eventForm") Event event, Model model,
+	public ModelAndView processAddEventForm(@Valid @ModelAttribute("eventForm") Eventw event,
 			Errors errors, RedirectAttributes redirectAttrs) {
 		if (errors.hasErrors()) {
-			model.addAttribute("navigation", "adminPages");
-			model.addAttribute("form", "addEvent");
-			model.addAttribute("allTypes", adminService.getEventTypes());
-			return "admin/eventForm";
+//			model.addAttribute("navigation", "adminPages");
+//			model.addAttribute("form", "addEvent");
+//			model.addAttribute("allTypes", adminService.getEventTypes());
+			ModelAndView mv = new ModelAndView("admin/eventForm");
+			mv.addObject("navigation", "adminPages");
+			mv.addObject("form", "addEvent");
+			mv.addObject("allTypes", adminService.getEventTypes());
+			return mv;
 		}
 		LOG.debug("No errors, continue with creating of event {}:", event.getName());
 		adminService.createEvent(event);
 		MessageHelper.addSuccessAttribute(redirectAttrs, "Event has been created!");
-		return "redirect:/admin/upcomingEvents";
+		ModelAndView mv = new ModelAndView("redirect:/admin/upcomingEvents");
+		return mv;
 	}
 	
 	@RequestMapping(value = "/updateEvent/{eventId}", method = RequestMethod.GET)
 	public String initUpdateEventForm(@PathVariable String eventId, Model model) {
 		model.addAttribute("navigation", "adminPages");
 		model.addAttribute("form", "updateEvent");
-		model.addAttribute("eventForm", adminService.findEvent(eventId));
 		model.addAttribute("allTypes", adminService.getEventTypes());
+		model.addAttribute("eventForm", adminService.findEvent(eventId));
 		return "admin/eventForm";
 	}
 	
 //	Path variable id not needed
 	@RequestMapping(value = "/updateEvent", method = RequestMethod.POST)
-	public String processUpdateEventForm(@Valid @ModelAttribute("eventForm") Event event, Model model,
+	public ModelAndView processUpdateEventForm(@Valid @ModelAttribute("eventForm") Eventw event,
 			Errors errors, RedirectAttributes redirectAttrs) {
 		if (errors.hasErrors()) {
-			model.addAttribute("navigation", "adminPages");
-			model.addAttribute("form", "updateEvent");
-			model.addAttribute("allTypes", adminService.getEventTypes());
-			return "admin/eventForm";
+//			model.addAttribute("navigation", "adminPages");
+//			model.addAttribute("form", "updateEvent");
+//			model.addAttribute("allTypes", adminService.getEventTypes());
+			ModelAndView mv = new ModelAndView("admin/eventForm");
+			mv.addObject("navigation", "adminPages");
+			mv.addObject("form", "updateEvent");
+			mv.addObject("allTypes", adminService.getEventTypes());
+			return mv;
 		}
 		LOG.debug("No errors, continue with updating of event {}:", event.getName());
 		adminService.updateEvent(event);
 		MessageHelper.addSuccessAttribute(redirectAttrs, "Event has been updated!");
-		return "redirect:/admin/upcomingEvents";
+		ModelAndView mv = new ModelAndView("redirect:/admin/upcomingEvents");
+		return mv;
 	}
 	
 	@RequestMapping(value = "/deleteEvent/{id}", method = RequestMethod.GET)

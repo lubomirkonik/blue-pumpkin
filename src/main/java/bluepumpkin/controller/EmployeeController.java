@@ -185,17 +185,15 @@ public class EmployeeController {
 		eventService.save(eventFour);
 		
 //		Past Sports Events
-		Event sportsEvent = new Event(UUID.randomUUID().toString(), "Sports Event", "Football3", "Near Football Stadium", getDatePastEvent(), "");
+		Event sportsEvent = new Event(UUID.randomUUID().toString(), "Sports Event", "Football3", "Near Football Stadium", getDateEvent(2014,9,15,9,00), "");
 		eventService.save(sportsEvent);
-		Event sportsEventWithScore = new Event(UUID.randomUUID().toString(), "Sports Event", "Football4", "Near Football Stadium", getDatePastEvent(), ""); //(2015,1,22,12,00)
+		Event sportsEventWithScore = new Event(UUID.randomUUID().toString(), "Sports Event", "Football4", "Near Football Stadium", getDateEvent(2015,1,22,10,00), "");
 		eventService.save(sportsEventWithScore);
 		
 //		Participants for user
-//		TODO remove
-		Participant participant = new Participant(UUID.randomUUID().toString(), null, employee, event);
-		participantService.save(participant);
-		
-		participant = new Participant(UUID.randomUUID().toString(), "Waiting", employee, eventOne);
+//		Participant participant = new Participant(UUID.randomUUID().toString(), null, employee, event);
+//		participantService.save(participant);
+		Participant participant = new Participant(UUID.randomUUID().toString(), "Waiting", employee, eventOne);
 		participantService.save(participant);
 		participant = new Participant(UUID.randomUUID().toString(), "Approved", employee, eventTwo);
 		participantService.save(participant);
@@ -209,8 +207,9 @@ public class EmployeeController {
 		participantService.save(participant);
 		participant = new Participant(UUID.randomUUID().toString(), "Approved", employee1, eventFour);
 		participantService.save(participant);
-		participant = new Participant(UUID.randomUUID().toString(), "Waiting", employee1, sportsEventWithScore);
-		participantService.save(participant);
+//		past event
+//		participant = new Participant(UUID.randomUUID().toString(), "Waiting", employee1, sportsEventWithScore);
+//		participantService.save(participant);
 		
 //		Teams for Sports Event 'eventTwo'
 		List<Employee> members1 = Arrays.asList(employee1, employee2, employee3, employee4, employee5);

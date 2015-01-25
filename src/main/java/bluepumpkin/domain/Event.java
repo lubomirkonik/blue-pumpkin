@@ -28,10 +28,10 @@ import org.springframework.format.annotation.DateTimeFormat;
  * @author Lubosh
  */
 @Entity(name = "event")
-public class Event {
+public class Event implements Serializable {
 //    private static final long serialVersionUID = 1L;
 	
-	private static final String NOT_BLANK_MESSAGE = "The value may not be empty!";
+//	private static final String NOT_BLANK_MESSAGE = "The value may not be empty!";
 	
     @Id
     @Column(name = "ID")
@@ -39,17 +39,18 @@ public class Event {
     
     private String type;
     
-    @NotNull(message = Event.NOT_BLANK_MESSAGE)
-    @NotEmpty(message = Event.NOT_BLANK_MESSAGE)
+//    @NotNull(message = Event.NOT_BLANK_MESSAGE)
+//    @NotEmpty(message = Event.NOT_BLANK_MESSAGE)
     private String name;
     
-    @NotNull(message = Event.NOT_BLANK_MESSAGE)
-    @NotEmpty(message = Event.NOT_BLANK_MESSAGE)
+//    @NotNull(message = Event.NOT_BLANK_MESSAGE)
+//    @NotEmpty(message = Event.NOT_BLANK_MESSAGE)
     private String place;
     
 //    @Temporal(TemporalType.TIMESTAMP)
-    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
-    @Future(message = "The value \"${formatter.format('%1$td.%1$tm.%1$tY', validatedValue)}\" is not in future!")
+//    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+//    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
+//    @Future(message = "The value \"${formatter.format('%1$td.%1$tm.%1$tY', validatedValue)}\" is not in future!")
     private Date dateTime;
 
     private String description;

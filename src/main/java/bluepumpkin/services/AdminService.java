@@ -15,6 +15,7 @@ import bluepumpkin.domain.Employee;
 import bluepumpkin.domain.Event;
 import bluepumpkin.domain.Participant;
 import bluepumpkin.domain.Team;
+import bluepumpkin.domain.web.Eventw;
 import bluepumpkin.repository.EmployeeRepository;
 import bluepumpkin.repository.EventRepository;
 import bluepumpkin.repository.ParticipantRepository;
@@ -89,17 +90,20 @@ public class AdminService {
 		return sorted;
 	}
 	
-	public Event findEvent(String id) {
-		return eventRepository.findOne(id);
+	public Eventw findEvent(String id) {
+		Event e = eventRepository.findOne(id);
+		Eventw ew = new Eventw(e.getId(), e.getType(), e.getName(), e.getPlace(), e.getDateTime());
+		return ew;
 	}
 	
-	public void createEvent(Event event) {
-		event.setId(UUID.randomUUID().toString());
+	public void createEvent(Eventw eventw) {
+		Event event = new Event(UUID.randomUUID().toString(), eventw.getType(), eventw.getName(), eventw.getPlace(), eventw.getDateTime(), "");
 		eventRepository.save(event);
 	}
 	
-	public void updateEvent(Event event) {
-		eventRepository.save(event);
+	public void updateEvent(Eventw ew) {
+		Event e = new Event(ew.getId(), ew.getType(), ew.getName(), ew.getPlace(), ew.getDateTime(), "");
+		eventRepository.save(e);
 	}
 	
 	public List<String> getEventTypes() {
