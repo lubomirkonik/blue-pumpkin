@@ -24,8 +24,6 @@ private static final String NOT_BLANK_MESSAGE = "The value may not be empty!";
     @NotEmpty(message = Eventw.NOT_BLANK_MESSAGE)
     private String place;
     
-//    @Temporal(TemporalType.TIMESTAMP)
-//    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
     @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
     @Future(message = "The value \"${formatter.format('%1$td.%1$tm.%1$tY', validatedValue)}\" is not in future!")
     private Date dateTime;
@@ -81,6 +79,5 @@ private static final String NOT_BLANK_MESSAGE = "The value may not be empty!";
 	public void setDateTime(Date dateTime) {
 		this.dateTime = dateTime;
 	}
-    
     
 }

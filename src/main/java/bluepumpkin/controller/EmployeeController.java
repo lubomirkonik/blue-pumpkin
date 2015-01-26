@@ -114,6 +114,7 @@ public class EmployeeController {
 		return "employee/contacts";
 	}
 	
+//	TODO could be in admin controller
 	@PostConstruct
 	private void init() {
 //		Employee for default account "user"

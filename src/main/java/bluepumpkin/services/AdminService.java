@@ -140,6 +140,5 @@ public class AdminService {
 				.sorted(byDepartment.thenComparing(byLastName))
 				.collect(Collectors.toList());
 	}
-
 	
 }
