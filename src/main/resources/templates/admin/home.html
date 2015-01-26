@@ -30,7 +30,7 @@
     <div class="col-md-3 pull-right">
 	<th:block th:unless="${#lists.isEmpty(birthdays)}">
 		<h4 class="text-center">Today's Birthdays</h4>
-		<table class="table table-hover table-condensed products-table" style="margin-bottom:25px;">
+		<table class="table table-hover table-condensed products-table" style="margin-bottom:8px;">
 			<tr th:each="employee,stat : ${birthdays}">
 				<td th:text="${employee.firstName}+' '+${employee.lastName}">Juraj Longo</td>
 				<!-- <td th:text="${employee.department}">Marketing</td> -->
@@ -40,7 +40,7 @@
 		</table>
 	</th:block>
 	<th:block th:if="${#lists.isEmpty(birthdays)}">
-    	<div class="alert alert-info" style="margin-bottom:25px;">There are no birthdays today.</div>
+    	<div class="alert alert-info" style="margin-bottom:8px;">There are no birthdays today.</div>
     </th:block>
 	</div>
 	
