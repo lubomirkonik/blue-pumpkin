@@ -3,12 +3,11 @@ package bluepumpkin.services;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 import javax.persistence.PersistenceException;
@@ -265,9 +264,13 @@ public class EmployeeService {
 		return sorted;
 	}
 	
-	public List<Employee> getContacts() {		
+	public List<Employee> getContacts() {
+		Comparator<Employee> byLastName = (c1, c2) -> c1.getLastName()
+	            .compareTo(c2.getLastName());
+		Comparator<Employee> byDepartment = (c1, c2) -> c1.getDepartment()
+	            .compareTo(c2.getDepartment());
 		return employeeRepository.findAll().stream()
-				.sorted((c1, c2) -> c1.getLastName().compareToIgnoreCase(c2.getLastName()))
+				.sorted(byDepartment.thenComparing(byLastName))
 				.collect(Collectors.toList());
 	}
 

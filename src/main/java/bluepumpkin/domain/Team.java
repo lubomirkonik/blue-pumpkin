@@ -45,7 +45,6 @@ public class Team {
 
     public Team(String id, Integer score, List<Employee> employeeList,
 			Event eventID) {
-		super();
 		this.id = id;
 		this.score = score;
 		this.employeeList = employeeList;

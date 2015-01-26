@@ -19,20 +19,22 @@
 <div class="container-fluid">
 	<div th:include="layout :: left"></div>
 	<div class="jumbotron navbar-left">
-        <h3>Home</h3>
+        <h3>Admin Home</h3>
         <p><small>View all participation requests</small></p>
         <p>
 			<!-- <a class="btn btn-info btn-large" href="./home.html" th:href="@{/admin}">Home</a> -->
 			<a class="btn btn-primary btn-large" href="/logout" th:href="@{/logout}">Logout</a>
         </p>
     </div>
-    <div class="col-md-3">
+    
+    <div class="col-md-3 pull-right">
 	<th:block th:unless="${#lists.isEmpty(birthdays)}">
 		<h4 class="text-center">Today's Birthdays</h4>
 		<table class="table table-hover table-condensed products-table" style="margin-bottom:25px;">
 			<tr th:each="employee,stat : ${birthdays}">
 				<td th:text="${employee.firstName}+' '+${employee.lastName}">Juraj Longo</td>
-				<td th:text="${employee.department}">Marketing</td>
+				<!-- <td th:text="${employee.department}">Marketing</td> -->
+				<td th:text="${employee.position}">Manager</td>
 				<td>Age <span class="badge" th:text="${employee.age}">52</span></td>
 			</tr>	
 		</table>
@@ -41,6 +43,7 @@
     	<div class="alert alert-info" style="margin-bottom:25px;">There are no birthdays today.</div>
     </th:block>
 	</div>
+	
     <div style="width: 1px; margin-bottom: -20px">&nbsp;</div>
     
     <th:block th:if="${message != null}">
@@ -70,15 +73,20 @@
 				<td th:text="${p.eventID.type}">Meeting</td>
 				<td th:text="${p.eventID.name}">Annual Meeting</td>
 				<td th:text="${p.eventID.place}">Office</td>
-				
-  				<!-- Today is: <span th:text="${#calendars.format(today,'dd MMMM yyyy')}">13 May 2011</span> -->
-				<td th:text="${#dates.format(p.eventID.dateTime)}">2014-05-01 10:00</td>
-				
+				<!-- <td th:text="${#dates.format(p.eventID.dateTime)}">Sobota, 1974, januára 12 10:30:00 CET</td> -->
+				<td th:text="${#calendars.format(p.eventID.dateTime,'dd. MMMM yyyy HH:mm')}">1. May 2014 10:00</td>
 				<td th:text="${p.employeeID.firstName}+' '+${p.employeeID.lastName}">Juraj Longo</td>
 				<td th:text="${p.employeeID.position}">Manager</td>
 				<td th:text="${p.employeeID.department}">Marketing</td>
 				<td th:text="${p.employeeID.telephone}">191708654333</td>
-				<td th:text="${p.employeeID.email}">juraj.longo@bluepumpkin.com</td>
+				<td>
+					<span th:if="${#strings.contains(p.employeeID.email, '@')}">
+						<span th:text="${#strings.arraySplit(p.employeeID.email, '@')[0]}">juraj.longo</span>
+						@<span th:text="${#strings.arraySplit(p.employeeID.email, '@')[1]}">bluepumpkin.com></span>
+						<!-- <span th:if="${#strings.arraySplit(p.employeeID.email, '@')[1] != null}" th:text="${#strings.arraySplit(p.employeeID.email, '@')[1]}">bluepumpkin.com</span> -->
+					</span>
+					<span th:unless="${#strings.contains(p.employeeID.email, '@')}" th:text="${p.employeeID.email}">user</span>
+				</td>
 				<td>
 					<a th:href="@{/admin/participations/{id}/approve(id=${p.id})}" href="#" class="btn btn-large btn-success">
 					<big class="glyphicon glyphicon-ok"></big></a>

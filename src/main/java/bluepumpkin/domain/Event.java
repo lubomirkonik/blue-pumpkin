@@ -28,7 +28,7 @@ import org.springframework.format.annotation.DateTimeFormat;
  * @author Lubosh
  */
 @Entity(name = "event")
-public class Event implements Serializable {
+public class Event {
 //    private static final long serialVersionUID = 1L;
 	
 //	private static final String NOT_BLANK_MESSAGE = "The value may not be empty!";

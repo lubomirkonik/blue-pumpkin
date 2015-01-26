@@ -3,6 +3,7 @@ package bluepumpkin.services;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -42,8 +43,11 @@ public class AdminService {
 
 	public List<Participant> getWaitingParticipations() {
 		List<Participant> waitingParticipations = participantRepository.findByStatus("Waiting");
-		Collections.reverse(waitingParticipations);
-		return waitingParticipations;
+		List<Participant> waitingFuturePs = waitingParticipations.stream()
+		.filter(p -> p.getEventID().getDateTime().compareTo(new Date()) > 0)
+		.collect(Collectors.toList());
+		Collections.reverse(waitingFuturePs);
+		return waitingFuturePs;
 	}
 
 	public void changeParticipationStatusToApproved(String id) {
@@ -128,8 +132,12 @@ public class AdminService {
 	}
 	
 	public List<Employee> getAccounts() {
+		Comparator<Employee> byLastName = (c1, c2) -> c1.getLastName()
+	            .compareTo(c2.getLastName());
+		Comparator<Employee> byDepartment = (c1, c2) -> c1.getDepartment()
+	            .compareTo(c2.getDepartment());
 		return employeeRepository.findAll().stream()
-				.sorted((c1, c2) -> c1.getLastName().compareToIgnoreCase(c2.getLastName()))
+				.sorted(byDepartment.thenComparing(byLastName))
 				.collect(Collectors.toList());
 	}
 

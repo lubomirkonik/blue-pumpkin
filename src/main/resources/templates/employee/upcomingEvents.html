@@ -1,5 +1,5 @@
 <!-- Model attributes: upcomingEvents - it's List<Participant> of one employee, including existing Participants of
- the Employee + other Participants with Events for which employee has not requested yet (status is null)-->
+          the Employee + other Participants with Events for which employee has not requested yet (status is null)-->
 <!-- 	  navigation - see layout.html -->
 <!--      message is for massages from controller (eg.You've successfully requested for participation./You've successfully canceled your part. request.) -->
 <!DOCTYPE html>
@@ -49,7 +49,7 @@
 		</thead>
 		<tbody>
 			<tr th:each="p,stat : ${upcomingEvents}">
-				<td th:text="${#dates.format(p.eventID.dateTime)}">2014-05-01 21:13:20.165</td>
+				<td th:text="${#calendars.format(p.eventID.dateTime,'dd. MMMM yyyy HH:mm')}">1. May 2014 10:00</td>
 				<td th:text="${p.eventID.type}">Meeting</td>
 				<td th:text="${p.eventID.name}">Annual Meeting</td>
 				<td th:text="${p.eventID.place}">Office</td>

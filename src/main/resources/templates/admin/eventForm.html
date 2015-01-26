@@ -81,7 +81,7 @@
         </div>
 		<div class="form-group">
             <div class="col-lg-offset-2 col-lg-10">
-            	<!-- "@{admin/updateEvent/{id}(id=${eventForm.id})}" --> <!-- "@{|/admin/updateEvent/${eventForm.id}|}" -->
+            	<!-- "@{/admin/updateEvent/{id}(id=${eventForm.id})}" --> <!-- "@{|/admin/updateEvent/${eventForm.id}|}" -->
             	<!-- "@{/admin/updateEvent(form='updateEvent')}"  -->
             	<th:block th:if="${form == 'updateEvent'}">
             		<button type="submit" th:form="eventF" th:formaction="@{/admin/updateEvent}" 

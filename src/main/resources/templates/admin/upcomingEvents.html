@@ -51,7 +51,7 @@
 		</thead>
 		<tbody>
 			<tr th:each="e,stat : ${upcomingEvents}">
-				<td th:text="${#dates.format(e.dateTime)}">2014-05-01 10:00</td>
+				<td th:text="${#calendars.format(e.dateTime,'dd. MMMM yyyy HH:mm')}">1. May 2014 10:00</td>
 				<td th:text="${e.type}">Meeting</td>
 				<td th:text="${e.name}">Annual Meeting</td>
 				<td th:text="${e.place}">Office</td>

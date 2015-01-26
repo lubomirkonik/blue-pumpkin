@@ -118,106 +118,135 @@ public class EmployeeController {
 	private void init() {
 //		Employee for default account "user"
 		Account account = accountService.findByEmail("user");
-		Employee employee = employee(account.getId(), "firstName", "lastName", "position", "department", "telephone", account.getEmail(), getDate(1980, 1, 20));
+		Employee employee = employee(account.getId(), "Andrew", "Bean", "Manager", "Accounting Department", "+191 708 654 333", account.getEmail(), getDate(1974, 1, 12));
 		employee = employeeService.save(employee);
 		
 //		Accounts and Employees
-		account = new Account("user1@bluepumpkin.com", "user", Account.ROLE_USER);
+		account = new Account("sonia.johnson@bluepumkin.com", "user", Account.ROLE_USER);
 		account = accountService.save(account);
-		Employee employee1 = employee(account.getId(), "firstName1", "lastName1", "position1", "department1", "telephone1", account.getEmail(), getBirthday(1970));
+		Employee employee1 = employee(account.getId(), "Sonia", "Johnson", "Accountant", "Accounting Department", "+191 708 654 320", account.getEmail(), getBirthday(1983));
 		employeeService.save(employee1);
 		
-		account = new Account("user2@bluepumpkin.com", "user", Account.ROLE_USER);
+		account = new Account("peter.parker@bluepumpkin.com", "user", Account.ROLE_USER);
 		account = accountService.save(account);
-		Employee employee2 = employee(account.getId(), "firstName1", "lastName1", "position1", "department1", "telephone1", account.getEmail(), getBirthday(1983));
+		Employee employee2 = employee(account.getId(), "Peter", "Parker", "Accountant", "Accounting Department", "+191 408 654 000", account.getEmail(), getDate(1976, 9, 15));
 		employeeService.save(employee2);
 		
-		account = new Account("user3@bluepumpkin.com", "user", Account.ROLE_USER);
+		account = new Account("dan.bruns@bluepumpkin.com", "user", Account.ROLE_USER);
 		account = accountService.save(account);
-		Employee employee3 = employee(account.getId(), "firstName1", "lastName1", "position1", "department1", "telephone1", account.getEmail(), getBirthday(1964));
+		Employee employee3 = employee(account.getId(), "Dan", "Bruns", "IT Junior", "IT Department", "+191 408 654 444", account.getEmail(), getDate(1985, 8, 30));
 		employeeService.save(employee3);
 		
-		account = new Account("user4@bluepumpkin.com", "user", Account.ROLE_USER);
+		account = new Account("joseph.karabas@bluepumpkin.com", "user", Account.ROLE_USER);
 		account = accountService.save(account);
-		Employee employee4 = employee(account.getId(), "firstName1", "lastName1", "position1", "department1", "telephone1", account.getEmail(), getDate(1970, 1, 20));
+		Employee employee4 = employee(account.getId(), "Joseph", "Karabas", "IT Senior", "IT Department", "+191 708 654 109", account.getEmail(), getBirthday(1964));
 		employeeService.save(employee4);
 		
-		account = new Account("user5@bluepumpkin.com", "user", Account.ROLE_USER);
+		account = new Account("andy.cole@bluepumpkin.com", "user", Account.ROLE_USER);
 		account = accountService.save(account);
-		Employee employee5 = employee(account.getId(), "firstName1", "lastName1", "position1", "department1", "telephone1", account.getEmail(), getDate(1970, 1, 20));
+		Employee employee5 = employee(account.getId(), "Andy", "Cole", "IT Senior", "IT Department", "+151 608 587 779", account.getEmail(), getDate(1967, 11, 24));
 		employeeService.save(employee5);
 		
-		account = new Account("user6@bluepumpkin.com", "user", Account.ROLE_USER);
+		account = new Account("barry.jackson@bluepumpkin.com", "user", Account.ROLE_USER);
 		account = accountService.save(account);
-		Employee employee6 = employee(account.getId(), "firstName1", "lastName1", "position1", "department1", "telephone1", account.getEmail(), getDate(1970, 1, 20));
+		Employee employee6 = employee(account.getId(), "Barry", "Jackson", "Technician Junior", "Claims Department", "+191 708 653 330", account.getEmail(), getDate(1987, 7, 17));
 		employeeService.save(employee6);
 		
-		account = new Account("user7@bluepumpkin.com", "user", Account.ROLE_USER);
+		account = new Account("carl.raid@bluepumpkin.com", "user", Account.ROLE_USER);
 		account = accountService.save(account);
-		Employee employee7 = employee(account.getId(), "firstName1", "lastName1", "position1", "department1", "telephone1", account.getEmail(), getDate(1970, 1, 20));
+		Employee employee7 = employee(account.getId(), "Carl", "Raid", "Technician Senior", "Claims Department", "+191 705 029 889", account.getEmail(), getDate(1965, 12, 8));
 		employeeService.save(employee7);
 		
-		account = new Account("user8@bluepumpkin.com", "user", Account.ROLE_USER);
+		account = new Account("alan.fabrikks@bluepumpkin.com", "user", Account.ROLE_USER);
 		account = accountService.save(account);
-		Employee employee8 = employee(account.getId(), "firstName1", "lastName1", "position1", "department1", "telephone1", account.getEmail(), getDate(1970, 1, 20));
+		Employee employee8 = employee(account.getId(), "Alan", "Fabrikks", "Technician Senior", "Claims Department", "+191 700 303 444", account.getEmail(), getDate(1959, 6, 29));
 		employeeService.save(employee8);
 		
-		account = new Account("user9@bluepumpkin.com", "user", Account.ROLE_USER);
+		account = new Account("annemarie.firefly@bluepumpkin.com", "user", Account.ROLE_USER);
 		account = accountService.save(account);
-		Employee employee9 = employee(account.getId(), "firstName1", "lastName1", "position1", "department1", "telephone1", account.getEmail(), getDate(1970, 1, 20));
+		Employee employee9 = employee(account.getId(), "Annemarie", "Firefly", "HR Generalist", "HR Department", "+191 708 654 321", account.getEmail(), getDate(1976, 8, 16));
 		employeeService.save(employee9);
 		
-		account = new Account("user10@bluepumpkin.com", "user", Account.ROLE_USER);
+		account = new Account("carmen.winch@bluepumpkin.com", "user", Account.ROLE_USER);
 		account = accountService.save(account);
-		Employee employee10 = employee(account.getId(), "firstName1", "lastName1", "position1", "department1", "telephone1", account.getEmail(), getDate(1970, 1, 20));
+		Employee employee10 = employee(account.getId(), "Carmen", "Winch", "HR Generalist", "HR Department", "+191 708 444 444", account.getEmail(), getDate(1979, 5, 16));
 		employeeService.save(employee10);
 		
+		account = new Account("katherine.boyle@bluepumpkin.com", "user", Account.ROLE_USER);
+		account = accountService.save(account);
+		Employee employee11 = employee(account.getId(), "Katherine", "Boyle", "HR Manager", "HR Department", "+191 708 493 766", account.getEmail(), getBirthday(1974));
+		employeeService.save(employee11);
+		
 //		Events
-		Event event = new Event(UUID.randomUUID().toString(), "Sports Event", "Football", "Near Football Stadium", getDateEvent(2015,5,20,8,30),"description");
+		Event event = new Event(UUID.randomUUID().toString(), "Sports Event", "Skittles", "Aupark, Sunrise Avenue 146, NY", getDateEvent(2015,2,26, 16,30), "description");
 		eventService.save(event);
-		Event eventOne = new Event(UUID.randomUUID().toString(), "Sports Event", "Football1", "Near Football Stadium1", getDateEvent(2015,5,23,10,00), "description1");
+		Event eventOne = new Event(UUID.randomUUID().toString(), "Sports Event", "Target Shooting", "Springfield West Geneseo, IL 61254", getDateEvent(2015,4,11, 10,00), "description");
 		eventService.save(eventOne);
-		Event eventTwo = new Event(UUID.randomUUID().toString(), "Sports Event", "Football2", "Near Football Stadium2", getDateEvent(2015,5,21,13,15), "description2");
+		Event eventTwo = new Event(UUID.randomUUID().toString(), "Sports Event", "Basketball", "Hall, Grapevine Lane Stone City, 57216", getDateEvent(2015,5,21, 13,15), "description");
 		eventService.save(eventTwo);
-		Event eventThree = new Event(UUID.randomUUID().toString(), "Meeting", "Annual Meeting", "Manager Office", getDateEvent(2015,5,26,9,00), "description3");
+		Event eventThree = new Event(UUID.randomUUID().toString(), "Meeting", "Internal Annual Meeting", "Conference Hall BP Head.", getDateEvent(2015,12,15, 9,00), "description");
 		eventService.save(eventThree);
-		Event eventFour = new Event(UUID.randomUUID().toString(), "Meeting", "Annual Meeting1", "Manager Office1", getDateEvent(2015,5,25,12,00), "description4");
+		Event eventFour = new Event(UUID.randomUUID().toString(), "Meeting", "Meeting with customer, Orion Group", "Bluepumpkin Headquarters", getDateEvent(2015,5,14, 13,30), "description");
 		eventService.save(eventFour);
+		Event eventFive = new Event(UUID.randomUUID().toString(), "Training", "IT Training, Microservices", "Microsoft, Apollo Business Center II", getDateEvent(2015,3,6, 9,15), "description");
+		eventService.save(eventFive);
+		Event eventSix = new Event(UUID.randomUUID().toString(), "Training", "Payroll News 2015", "PayWell Headquarters, TI", getDateEvent(2015,4,17, 13,45), "description");
+		eventService.save(eventSix);
+		Event eventSeven = new Event(UUID.randomUUID().toString(), "Trip", "Hiking", "Blue Lake, Saint Helier, Jersey", getDateEvent(2015,6,2, 8,05), "description");
+		eventService.save(eventSeven);
+		Event eventEight = new Event(UUID.randomUUID().toString(), "Trip", "Mountain climbing", "Rock Hill, South Carolina", getDateEvent(2015,8,17, 7,45), "description");
+		eventService.save(eventEight);
+		
+//		Past Events
+		Event eventNine = new Event(UUID.randomUUID().toString(), "Meeting", "Meeting with customer, Microram inc.", "Bluepumpkin Headquarters", getDateEvent(2014,11,3, 10,15), "description");
+		eventService.save(eventNine);
 		
 //		Past Sports Events
-		Event sportsEvent = new Event(UUID.randomUUID().toString(), "Sports Event", "Football3", "Near Football Stadium", getDateEvent(2014,9,15,9,00), "");
+		Event sportsEvent = new Event(UUID.randomUUID().toString(), "Sports Event", "Baseball", "Company's outside premises", getDateEvent(2014,9,15, 9,00), "");
 		eventService.save(sportsEvent);
-		Event sportsEventWithScore = new Event(UUID.randomUUID().toString(), "Sports Event", "Football4", "Near Football Stadium", getDateEvent(2015,1,22,10,00), "");
+		Event sportsEventWithScore = new Event(UUID.randomUUID().toString(), "Sports Event", "Football", "Near Football Stadium", getDateEvent(2014,10,8, 10,05), "");
 		eventService.save(sportsEventWithScore);
 		
-//		Participants for user
+//		Participants for 'user'
 //		Participant participant = new Participant(UUID.randomUUID().toString(), null, employee, event);
 //		participantService.save(participant);
-		Participant participant = new Participant(UUID.randomUUID().toString(), "Waiting", employee, eventOne);
+		Participant participant = new Participant(UUID.randomUUID().toString(), "Denied", employee, eventOne);
 		participantService.save(participant);
 		participant = new Participant(UUID.randomUUID().toString(), "Approved", employee, eventTwo);
 		participantService.save(participant);
-		participant = new Participant(UUID.randomUUID().toString(), "Denied", employee, eventThree);
+		participant = new Participant(UUID.randomUUID().toString(), "Waiting", employee, eventThree);
 		participantService.save(participant);
-		
-//		Participants for user1
-		participant = new Participant(UUID.randomUUID().toString(), "Waiting", employee1, event);
-		participantService.save(participant);
-		participant = new Participant(UUID.randomUUID().toString(), "Denied", employee1, eventThree);
-		participantService.save(participant);
-		participant = new Participant(UUID.randomUUID().toString(), "Approved", employee1, eventFour);
-		participantService.save(participant);
-//		past event
-//		participant = new Participant(UUID.randomUUID().toString(), "Waiting", employee1, sportsEventWithScore);
+//		Past event
+//		participant = new Participant(UUID.randomUUID().toString(), "Waiting", employee, sportsEventWithScore);
 //		participantService.save(participant);
 		
-//		Teams for Sports Event 'eventTwo'
+//		Participants for 'user1'
+		participant = new Participant(UUID.randomUUID().toString(), "Approved", employee1, event);
+		participantService.save(participant);
+		participant = new Participant(UUID.randomUUID().toString(), "Approved", employee1, eventTwo);
+		participantService.save(participant);
+		participant = new Participant(UUID.randomUUID().toString(), "Waiting", employee1, eventSeven);
+		participantService.save(participant);
+		
+//		Teams for Past Sports Event with score
 		List<Employee> members1 = Arrays.asList(employee1, employee2, employee3, employee4, employee5);
 		List<Employee> members2 = Arrays.asList(employee6, employee7, employee8, employee9, employee10);
 		Team team1 = new Team(UUID.randomUUID().toString(), 14, members1, sportsEventWithScore);
 		Team team2 = new Team(UUID.randomUUID().toString(), 6, members2, sportsEventWithScore);
 		employeeService.createTeam(team1);
 		employeeService.createTeam(team2);
+		employee1.setTeamList(Arrays.asList(team1)); employeeService.save(employee1);
+		employee2.setTeamList(Arrays.asList(team1)); employeeService.save(employee2);
+		employee3.setTeamList(Arrays.asList(team1)); employeeService.save(employee3);
+		employee4.setTeamList(Arrays.asList(team1)); employeeService.save(employee4);
+		employee5.setTeamList(Arrays.asList(team1)); employeeService.save(employee5);
+		employee6.setTeamList(Arrays.asList(team2)); employeeService.save(employee6);
+		employee7.setTeamList(Arrays.asList(team2)); employeeService.save(employee7);
+		employee8.setTeamList(Arrays.asList(team2)); employeeService.save(employee8);
+		employee9.setTeamList(Arrays.asList(team2)); employeeService.save(employee9);
+		employee10.setTeamList(Arrays.asList(team2)); employeeService.save(employee10);
+//		sportsEventWithScore.setTeamList(Arrays.asList(team1, team2));
+//		eventService.save(sportsEventWithScore);
 	}
 	private Date getDate(int year, int month, int day) {
 		Calendar date = Calendar.getInstance();
