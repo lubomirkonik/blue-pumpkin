@@ -1,7 +1,5 @@
 package bluepumpkin.controller;
 
-import java.util.List;
-
 import javax.validation.Valid;
 
 import org.slf4j.Logger;
@@ -18,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import bluepumpkin.domain.Event;
 import bluepumpkin.domain.web.Eventw;
 import bluepumpkin.services.AdminService;
 import bluepumpkin.services.EmployeeService;
@@ -44,7 +41,6 @@ public class AdminController {
 		model.addAttribute("navigation", "adminPages");
 		model.addAttribute("birthdays", employeeService.getBirthdays());
 		LOG.debug("Waiting participation requests to admin home view");
-//		TODO _assure_ list is reversed that most recent request is first
 		model.addAttribute("participations", adminService.getWaitingParticipations());	
 		return "admin/home";
 	}
@@ -81,19 +77,7 @@ public class AdminController {
 		return "admin/eventForm";
 	}	
 	
-//	@ModelAttribute
-//	public void populateModel(@RequestParam("form") String form, Model model) {
-//		if (form.equals("addEvent")) {
-//			model.addAttribute("form", "addEvent");
-//			model.addAttribute("navigation", "adminPages");
-//			model.addAttribute("allTypes", adminService.getEventTypes());
-//		} else if (form.equals("updateEvent")) {
-//			model.addAttribute("form", "updateEvent");
-//			model.addAttribute("navigation", "adminPages");
-//			model.addAttribute("allTypes", adminService.getEventTypes());
-//		}
-//	}
-	
+//	TODO common model attributes this way
 //	@ModelAttribute("allTypes")
 //	private List<String> getEventTypes() {
 //		return adminService.getEventTypes();
@@ -103,9 +87,6 @@ public class AdminController {
 	public ModelAndView processAddEventForm(@Valid @ModelAttribute("eventForm") Eventw event,
 			Errors errors, RedirectAttributes redirectAttrs) {
 		if (errors.hasErrors()) {
-//			model.addAttribute("navigation", "adminPages");
-//			model.addAttribute("form", "addEvent");
-//			model.addAttribute("allTypes", adminService.getEventTypes());
 			ModelAndView mv = new ModelAndView("admin/eventForm");
 			mv.addObject("navigation", "adminPages");
 			mv.addObject("form", "addEvent");
@@ -128,14 +109,10 @@ public class AdminController {
 		return "admin/eventForm";
 	}
 	
-//	Path variable id not needed
 	@RequestMapping(value = "/updateEvent", method = RequestMethod.POST)
 	public ModelAndView processUpdateEventForm(@Valid @ModelAttribute("eventForm") Eventw event,
 			Errors errors, RedirectAttributes redirectAttrs) {
 		if (errors.hasErrors()) {
-//			model.addAttribute("navigation", "adminPages");
-//			model.addAttribute("form", "updateEvent");
-//			model.addAttribute("allTypes", adminService.getEventTypes());
 			ModelAndView mv = new ModelAndView("admin/eventForm");
 			mv.addObject("navigation", "adminPages");
 			mv.addObject("form", "updateEvent");
@@ -173,4 +150,5 @@ public class AdminController {
 		model.addAttribute("accounts", adminService.getAccounts());
 		return "admin/accounts";
 	}
+	
 }

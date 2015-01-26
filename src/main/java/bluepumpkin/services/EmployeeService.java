@@ -126,12 +126,7 @@ public class EmployeeService {
 		teamsWithScore.stream()
 		.filter(t -> t.getEventID().getId() == latest.getId())
 		.forEach(t -> latest.getTeamList().add(t));
-//		the same
-//		for (Team t : teams) {
-//			if(t.getEventID().getId() == latest.getId()) {
-//				latest.getTeamList().add(t);
-//			}
-//		}
+
 		return latest;
 	}
 	
