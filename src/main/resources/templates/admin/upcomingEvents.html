@@ -1,7 +1,6 @@
-<!-- Model attributes: upcomingEvents - it's List<Participant> of one employee, including existing Participants of
-          the Employee + other Participants with Events for which employee has not requested yet (status is null)-->
+<!-- Model attributes: upcomingEvents -->
 <!-- 	  navigation - see layout.html -->
-<!--      message is for massages from controller (eg.You've successfully requested for participation./You've successfully canceled your part. request.) -->
+<!--      message is for massages from controller -->
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" >
 <head>
@@ -24,7 +23,7 @@
         <h3>Upcoming Events</h3>
         <p><small>View all upcoming events</small></p>
         <p>
-			<a class="btn btn-info btn-large" href="./home.html" th:href="@{/}">Home</a>
+			<a class="btn btn-info btn-large" href="./home.html" th:href="@{/admin}">Home</a>
 			<a class="btn btn-primary btn-large" href="#" th:href="@{/logout}">Logout</a>
         </p>
     </div>
@@ -35,6 +34,9 @@
     </th:block>
 
 <div> <!-- col-md-12 -->
+	<a th:href="@{/admin/addEvent}" href="#" class="btn btn-large btn-success">
+		Add Event
+	</a>
 	<th:block th:if="${#lists.size(upcomingEvents)} >= 1"> <!-- th:unless="${#lists.isEmpty(...)}" -->
     <table class="table table-hover products-table" style="margin-bottom:8px;">
 		<thead>
@@ -43,37 +45,28 @@
           		<th>Type</th>
           		<th>Name</th>
           		<th>Place</th>
-          		<th>Status</th>
-				<th class="col-md-1"><small>Request Cancel</small></th>
+          		<th>Update</th>
+          		<th>Delete</th>
 			</tr>
 		</thead>
 		<tbody>
-			<tr th:each="p,stat : ${upcomingEvents}">
-				<td th:text="${#calendars.format(p.eventID.dateTime,'dd. MMMM yyyy HH:mm')}">1. May 2014 10:00</td>
-				<td th:text="${p.eventID.type}">Meeting</td>
-				<td th:text="${p.eventID.name}">Annual Meeting</td>
-				<td th:text="${p.eventID.place}">Office</td>
-				<td th:switch="${p.status}">
-					  <div th:case="null"></div>
-					  <div th:case="'Waiting'" class="label label-info" th:text="${p.status}">Waiting</div>
-					  <div th:case="'Approved'" class="label label-success" th:text="${p.status}">Approved</div>
-					  <div th:case="'Denied'" class="label label-danger" th:text="${p.status}">Denied</div>
-					  <div th:case="*" class="label label-default">N/A</div>
+			<tr th:each="e,stat : ${upcomingEvents}">
+				<td th:text="${#calendars.format(e.dateTime,'dd. MMMM yyyy HH:mm')}">1. May 2014 10:00</td>
+				<td th:text="${e.type}">Meeting</td>
+				<td th:text="${e.name}">Annual Meeting</td>
+				<td th:text="${e.place}">Office</td>
+				<td>
+					<a th:href="@{/admin/updateEvent/{eventId}(eventId=${e.id})}" href="#" class="btn btn-large btn-primary">
+					<big class="glyphicon glyphicon-pencil"></big></a>
 				</td>
-				<td th:if="${p.status == null}">
-				<a th:href="@{/participations/{id}/doRequest(id=${p.eventID.id},page='upcomingEvents')}" href="#" class="btn btn-large btn-success">
-				<big class="glyphicon glyphicon-ok"></big></a></td>
-				
-				<td th:if="${p.status == 'Approved' || p.status == 'Waiting'}">
-				<a th:href="@{/participations/{id}/cancel(id=${p.id},page='upcomingEvents')}" href="#" class="btn btn-large btn-danger">
-				<big class="glyphicon glyphicon-remove"></big></a></td>
-				
-				<td th:if="${p.status == 'Denied'}"><a href="#" class="btn btn-large btn-danger" disabled="disabled"><big class="glyphicon glyphicon-remove"></big></a></td>
+				<td>
+					<a th:href="@{/admin/deleteEvent/{id}(id=${e.id},page='upcomingEvents')}" href="#" class="btn btn-large btn-danger">
+					<big class="glyphicon glyphicon-trash"></big></a>
+				</td>
 			</tr>
 		</tbody>
     </table>
     </th:block>
-    
     <th:block th:if="${#lists.isEmpty(upcomingEvents)}">
     	<div class="alert alert-warning">There are <strong>no</strong> upcoming events.</div>
     </th:block>

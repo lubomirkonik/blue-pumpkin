@@ -16,8 +16,12 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.validation.constraints.Future;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
+import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  *
@@ -27,15 +31,26 @@ import javax.validation.constraints.Size;
 public class Event {
 //    private static final long serialVersionUID = 1L;
 	
+//	private static final String NOT_BLANK_MESSAGE = "The value may not be empty!";
+	
     @Id
     @Column(name = "ID")
     private String id;
     
     private String type;
+    
+//    @NotNull(message = Event.NOT_BLANK_MESSAGE)
+//    @NotEmpty(message = Event.NOT_BLANK_MESSAGE)
     private String name;
+    
+//    @NotNull(message = Event.NOT_BLANK_MESSAGE)
+//    @NotEmpty(message = Event.NOT_BLANK_MESSAGE)
     private String place;
     
 //    @Temporal(TemporalType.TIMESTAMP)
+//    @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+//    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
+//    @Future(message = "The value \"${formatter.format('%1$td.%1$tm.%1$tY', validatedValue)}\" is not in future!")
     private Date dateTime;
 
     private String description;
