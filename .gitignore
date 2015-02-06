@@ -47,4 +47,7 @@ Temporary Items
 .gradle/1.12/taskArtifacts/fileSnapshots.bin
 .gradle/1.12/taskArtifacts/outputFileStates.bin
 .gradle/1.12/taskArtifacts/taskArtifacts.bin
+/.gradle
+/.settings
 /bin
+/build
