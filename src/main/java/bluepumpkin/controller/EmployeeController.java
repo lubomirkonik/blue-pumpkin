@@ -4,7 +4,6 @@ import java.security.Principal;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 import java.util.UUID;
 
@@ -230,10 +229,10 @@ public class EmployeeController {
 		participantService.save(participant);
 		
 //		Teams for Past Sports Event with score
-		List<Employee> members1 = Arrays.asList(employee1, employee2, employee3, employee4, employee5);
-		List<Employee> members2 = Arrays.asList(employee6, employee7, employee8, employee9, employee10);
-		Team team1 = new Team(UUID.randomUUID().toString(), 14, members1, sportsEventWithScore);
-		Team team2 = new Team(UUID.randomUUID().toString(), 6, members2, sportsEventWithScore);
+//		List<Employee> members1 = Arrays.asList(employee1, employee2, employee3, employee4, employee5);
+//		List<Employee> members2 = Arrays.asList(employee6, employee7, employee8, employee9, employee10);
+		Team team1 = new Team(UUID.randomUUID().toString(), 14, sportsEventWithScore);
+		Team team2 = new Team(UUID.randomUUID().toString(), 6, sportsEventWithScore);
 		employeeService.createTeam(team1);
 		employeeService.createTeam(team2);
 		employee1.setTeamList(Arrays.asList(team1)); employeeService.save(employee1);

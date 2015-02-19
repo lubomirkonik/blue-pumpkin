@@ -115,18 +115,22 @@ public class AdminService {
 	}
 
 	public void deleteEvent(String id) {
-		List<Participant> participations = participantRepository.findAll();
-		for (Participant p : participations) {
-			if (p.getEventID().getId() == id) {
-				participantRepository.delete(p);
-			}
-		}
-//		TODO filter by event type 'Sports Event'
-		List<Team> teams = teamRepository.findAll();
-		for (Team t : teams) {
-			if (t.getEventID().getId() == id) {
-				teamRepository.delete(t);
-			}
+		Event event = eventRepository.findOne(id);
+		
+//		get event's participants and delete each one
+		event.getParticipantList().forEach(p -> participantRepository.delete(p));
+		
+//		if event is of type 'Sports Event'
+		if (event.getType().equals("Sports Event")) {
+//			iterate through event's teams
+			event.getTeamList().forEach(team -> {
+//				iterate through team's employees and delete the team from each employee - deletes record from 'team_member' assoc. table
+				team.getEmployeeList().forEach(emp -> {
+					emp.getTeamList().remove(team);
+					employeeRepository.save(emp);
+				});
+				teamRepository.delete(team);
+			});	
 		}
 		eventRepository.delete(id);
 	}

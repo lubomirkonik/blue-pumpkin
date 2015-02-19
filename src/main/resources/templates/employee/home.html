@@ -107,13 +107,14 @@
 	</div>
 	
     <div style="width: 1px; margin-bottom: -20px">&nbsp;</div>
-    
-    <th:block th:if="${message != null}">
-        <div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)}, message=${message.message})">&nbsp;</div>
-    </th:block>
 
 <!-- <div class="row">   --> 
 <div class="col-md-9"> <!-- col-md-12  style="min-height:350px;"-->
+
+	<th:block th:if="${message != null}">
+        <div th:replace="fragments/alert :: alert (type=${#strings.toLowerCase(message.type)}, message=${message.message})">&nbsp;</div>
+    </th:block>
+	
 	<th:block th:if="${#lists.size(participations)} >= 1"> <!-- th:unless="${#lists.isEmpty(participations)}" -->
     <table class="table table-hover products-table" style="margin-bottom:8px;">
 		<thead>

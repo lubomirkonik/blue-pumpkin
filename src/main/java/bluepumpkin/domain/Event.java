@@ -27,10 +27,10 @@ public class Event {
     private Date dateTime;
     private String description;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventID")
+    @OneToMany(mappedBy = "eventID") //orphanRemoval = true
     private List<Team> teamList;
     
-    @OneToMany(cascade = CascadeType.ALL, mappedBy = "eventID")
+    @OneToMany(mappedBy = "eventID") //orphanRemoval = true - when updating Event-collection with cascade=”all-delete-orphan” was no longer referenced by the owning entity instance
     private List<Participant> participantList;
 
     public Event() {

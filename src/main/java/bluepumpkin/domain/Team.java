@@ -9,6 +9,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
+import static javax.persistence.CascadeType.ALL;
 /**
  *
  * @author Lubosh
@@ -36,6 +37,13 @@ public class Team {
     public Team(String id) {
         this.id = id;
     }
+    
+    public Team(String id, Integer score,
+			Event eventID) {
+		this.id = id;
+		this.score = score;
+		this.eventID = eventID;
+	}
 
     public Team(String id, Integer score, List<Employee> employeeList,
 			Event eventID) {
