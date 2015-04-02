@@ -67,7 +67,6 @@ public class AdminController {
 		return "admin/upcomingEvents";
 	}
 	
-//	TODO ID may be initialized
 	@RequestMapping(value = "/addEvent", method = RequestMethod.GET)
 	public String initAddEventForm(Model model) {
 		model.addAttribute("navigation", "adminPages");
@@ -93,7 +92,7 @@ public class AdminController {
 			mv.addObject("allTypes", adminService.getEventTypes());
 			return mv;
 		}
-		LOG.debug("No errors, continue with creating of event {}:", event.getName());
+		LOG.debug("No errors, continue with creating of event: {}", event.getName());
 		adminService.createEvent(event);
 		MessageHelper.addSuccessAttribute(redirectAttrs, "Event has been created!");
 		ModelAndView mv = new ModelAndView("redirect:/admin/upcomingEvents");
