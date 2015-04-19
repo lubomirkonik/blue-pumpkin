@@ -118,7 +118,7 @@ public class AdminController {
 			mv.addObject("allTypes", adminService.getEventTypes());
 			return mv;
 		}
-		LOG.debug("No errors, continue with updating of event {}:", event.getName());
+		LOG.debug("No errors, continue with updating of event: {}", event.getName());
 		adminService.updateEvent(event);
 		MessageHelper.addSuccessAttribute(redirectAttrs, "Event has been updated!");
 		ModelAndView mv = new ModelAndView("redirect:/admin/upcomingEvents");
